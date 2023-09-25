@@ -61,13 +61,13 @@ $(NAME): $(OBJECTS)
 	@$(CC) $(CFLAGS) $(FSANITIZE) $(OBJECTS) $(LIBFT) $(MLX) -o $(NAME) $(HEADERS)
 
 $(LIBFT):
-ifeq ($(shell [ -e $(LIBFT) ] && echo 1 || echo 0),0)
+ifeq ($(LIBFT_EXISTS),0)
 	@$(MAKE_LIBS) $(LIBFT_DIR)
 endif
 
 $(MLX):
-ifeq ($(shell [ -e $(MLX) ] && echo 1 || echo 0),0)
-	@$(CMAKE) $(MLX_DIR) -B $(MLX_BUILD) && $(MAKE_LIBS) $(MLX_BUILD)
+ifeq ($(MLX_EXISTS),0)
+	@$(CMAKE) $(MLX_DIR) -B $(MLX_BUILD) && $(MAKE_LIBS) $(MLX_BUILD) -j4
  endif
 
 $(OBJECTS_DIR)%.o: $(SOURCES_DIR)%.c
@@ -89,6 +89,7 @@ fclean: clean
 	@$(RM) $(NAME)
 
 re: fclean
-	$(MAKE)
+	@$(MAKE)
+
 run: all
 	@./$(NAME)
