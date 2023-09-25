@@ -55,19 +55,19 @@ LIBFT_EXISTS	:= $(shell [ -e $(LIBFT) ] && echo 1 || echo 0)
 
 all: libraries $(NAME)
 
-libraries: $(LIBFT) $(MLX)
+libraries: $(MLX) $(LIBFT)
 
 $(NAME): $(OBJECTS)
 	@$(CC) $(CFLAGS) $(FSANITIZE) $(OBJECTS) $(LIBFT) $(MLX) -o $(NAME) $(HEADERS)
 
 $(LIBFT):
-ifeq ($(LIBFT_EXISTS),0)
+ifeq ($(shell [ -e $(LIBFT) ] && echo 1 || echo 0),0)
 	@$(MAKE_LIBS) $(LIBFT_DIR)
 endif
 
 $(MLX):
-ifeq ($(MLX_EXISTS),0)
-	@$(CMAKE) $(MLX_DIR) -B $(MLX_BUILD) && $(MAKE_LIBS) $(MLX_BUILD) -j4
+ifeq ($(shell [ -e $(MLX) ] && echo 1 || echo 0),0)
+	@$(CMAKE) $(MLX_DIR) -B $(MLX_BUILD) && $(MAKE_LIBS) $(MLX_BUILD)
  endif
 
 $(OBJECTS_DIR)%.o: $(SOURCES_DIR)%.c
@@ -77,7 +77,7 @@ $(OBJECTS_DIR)%.o: $(SOURCES_DIR)%.c
 clean: cleanlibs
 	@$(RM) $(OBJECTS_DIR)
 
-cleanlibs: cleanlibft cleanmlx
+cleanlibs: cleanmlx cleanlibft
 
 cleanlibft:
 	@$(MAKE_LIBS) $(LIBFT_DIR) fclean
@@ -88,7 +88,7 @@ cleanmlx:
 fclean: clean
 	@$(RM) $(NAME)
 
-re: fclean all
-
+re: fclean
+	$(MAKE)
 run: all
 	@./$(NAME)
