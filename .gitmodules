@@ -1,6 +1,6 @@
-[submodule "LIBFT"]
-	path = libraries/libft
-	url = git@github.com:mendes-jv/libft.git
 [submodule "MLX42"]
 	path = libraries/mlx42
 	url = git@github.com:codam-coding-college/MLX42.git
+[submodule "LIBFT"]
+	path = libraries/libft
+	url = https://github.com/mendes-jv/libft

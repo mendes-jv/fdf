@@ -44,10 +44,11 @@ LIBFT_HEADER	:= $(addprefix $(LIBFT_DIR), includes/libft.h)
 MLX_HEADER		:= $(addprefix $(MLX_DIR), include/)
 HEADERS			:= -I $(HEADERS_DIR) -I $(MLX_HEADER)
 
-# Libraries checkers
+# Extra Variables
 
 MLX_EXISTS		:= $(shell [ -e $(MLX) ] && echo 1 || echo 0)
 LIBFT_EXISTS	:= $(shell [ -e $(LIBFT) ] && echo 1 || echo 0)
+COMPILE_ARGS	:=
 
 # Rules
 
@@ -92,4 +93,4 @@ re: fclean
 	@$(MAKE)
 
 run: all
-	@./$(NAME)
+	@./$(NAME) $(COMPILE_ARGS)
