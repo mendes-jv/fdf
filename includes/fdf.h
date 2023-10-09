@@ -40,4 +40,7 @@
 #  define OPEN_FAILURE_MESSAGE "Failed to open file.\n"
 # endif //OPEN_FAILURE_MESSAGE
 
+void	error_handle(const char *message);
+void	map_handle(char *map_str);
+
 #endif //FDF_H
