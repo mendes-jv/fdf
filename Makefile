@@ -18,8 +18,11 @@ SOURCES_DIR		:= sources/
 OBJECTS_DIR		:= objects/
 HEADERS_DIR		:= includes/
 LIBRARIES_DIR	:= libraries/
+BUILD_DIR		:= build/
 MLX_DIR			:= $(addprefix $(LIBRARIES_DIR), mlx42/)
 LIBFT_DIR		:= $(addprefix $(LIBRARIES_DIR), libft/)
+MLX_FILE		:= libmlx42.a
+LIBFT_FILE 		:= libft.a
 
 MAKE			:= make
 CMAKE			:= cmake
@@ -29,25 +32,21 @@ CFLAGS			:= -Wall -Wextra -Werror -g3
 FSANITIZE		:= -fsanitize=address
 MKDIR			:= mkdir -p
 RM				:= rm -rf
+MLX_FLAGS		:= -ldl -lglfw -pthread -lm
 
 # Sources
 
-SOURCE_FILES	:= fdf
+SOURCE_FILES	:= fdf map_handle error_handle
 
 SOURCES			:= $(addprefix $(SOURCES_DIR), $(addsuffix .c, $(SOURCE_FILES)))
 OBJECTS			:= $(addprefix $(OBJECTS_DIR), $(addsuffix .o, $(SOURCE_FILES)))
-LIBFT			:= $(addprefix $(LIBFT_DIR), libft.a)
-MLX_BUILD		:= $(addprefix $(MLX_DIR), build/)
-MLX				:= $(addprefix $(MLX_BUILD), libmlx42.a) -ldl -lglfw -pthread -lm
+LIBFT			:= $(addprefix $(LIBFT_DIR), $(LIBFT_FILE))
+MLX_BUILD		:= $(addprefix $(MLX_DIR), $(BUILD_DIR))
+MLX				:= $(addprefix $(MLX_BUILD), $(MLX_FILE))
 
 LIBFT_HEADER	:= $(addprefix $(LIBFT_DIR), includes/libft.h)
 MLX_HEADER		:= $(addprefix $(MLX_DIR), include/)
 HEADERS			:= -I $(HEADERS_DIR) -I $(MLX_HEADER)
-
-# Libraries checkers
-
-MLX_EXISTS		:= $(shell [ -e $(MLX) ] && echo 1 || echo 0)
-LIBFT_EXISTS	:= $(shell [ -e $(LIBFT) ] && echo 1 || echo 0)
 
 # Rules
 
@@ -58,17 +57,13 @@ all: libraries $(NAME)
 libraries: $(MLX) $(LIBFT)
 
 $(NAME): $(OBJECTS)
-	@$(CC) $(CFLAGS) $(FSANITIZE) $(OBJECTS) $(LIBFT) $(MLX) -o $(NAME) $(HEADERS)
+	@$(CC) $(CFLAGS) $(FSANITIZE) $(OBJECTS) $(LIBFT) $(MLX) $(MLX_FLAGS) -o $(NAME) $(HEADERS)
 
 $(LIBFT):
-ifeq ($(LIBFT_EXISTS),0)
 	@$(MAKE_LIBS) $(LIBFT_DIR)
-endif
 
 $(MLX):
-ifeq ($(MLX_EXISTS),0)
 	@$(CMAKE) $(MLX_DIR) -B $(MLX_BUILD) && $(MAKE_LIBS) $(MLX_BUILD) -j4
- endif
 
 $(OBJECTS_DIR)%.o: $(SOURCES_DIR)%.c
 	@$(MKDIR) $(OBJECTS_DIR)
@@ -90,6 +85,3 @@ fclean: clean
 
 re: fclean
 	@$(MAKE)
-
-run: all
-	@./$(NAME)

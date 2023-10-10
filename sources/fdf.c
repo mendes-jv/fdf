@@ -13,11 +13,26 @@
 #include "../includes/fdf.h"
 
 static void	hook(void *parameter);
+static void	mlx_handle(void);
 
-int	main(void)
+int	main(int argc, char **argv) {
+	if (!argv || argc != 2)
+		error_handle(ARGUMENTS_ERROR_MESSAGE);
+	map_handle(argv[1]);
+	mlx_handle();
+	return (EXIT_SUCCESS);
+}
+
+void	hook(void *parameter)
 {
-	mlx_t		*mlx;
-	mlx_image_t	*image;
+	if (mlx_is_key_down((mlx_t *)parameter, MLX_KEY_ESCAPE))
+		mlx_close_window((mlx_t *)parameter);
+}
+
+void mlx_handle(void)
+{
+	mlx_t *mlx;
+	mlx_image_t *image;
 
 	mlx_set_setting(MLX_MAXIMIZED, true);
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
@@ -27,17 +42,9 @@ int	main(void)
 	{
 		if (mlx)
 			mlx_close_window(mlx);
-		ft_printf("%s", mlx_strerror(mlx_errno));
-		return (EXIT_FAILURE);
+		error_handle(mlx_strerror(mlx_errno));
 	}
 	mlx_loop_hook(mlx, hook, mlx);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
-	return (EXIT_SUCCESS);
-}
-
-void	hook(void *parameter)
-{
-	if (mlx_is_key_down((mlx_t *)parameter, MLX_KEY_ESCAPE))
-		mlx_close_window((mlx_t *)parameter);
 }
