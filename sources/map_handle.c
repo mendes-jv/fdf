@@ -67,7 +67,7 @@ static void	line_split(t_list *list)
 		node->content = ft_split(node->content, ' ');
 		free(temp_content);
 		for (int i = 0; ((char **)node->content)[i]; i++)
-			ft_printf("%3s", ((char **)node->content)[i]);
+			ft_printf("%-2s", ((char **)node->content)[i]);
 		node = node->next;
 	}
 }
@@ -93,7 +93,7 @@ static void	line_parse(t_list *list)
 		free(node->content);
 		node->content = new_node;
 		for (int j = 0; i != j; ++j)
-			ft_printf("%3i", ((int *)node->content)[j]);
+			ft_printf("%-2i", ((int *)node->content)[j]);
 		ft_printf("\n");
 		node = node->next;
 	}
