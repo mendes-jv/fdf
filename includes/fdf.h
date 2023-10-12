@@ -40,7 +40,20 @@
 #  define OPEN_FAILURE_MESSAGE "Failed to open file.\n"
 # endif //OPEN_FAILURE_MESSAGE
 
-void	error_handle(const char *message);
-void	map_handle(char *map_str);
+# ifndef MALLOC_FAILURE_MESSAGE
+#  define MALLOC_FAILURE_MESSAGE "Failed to allocate memory.\n"
+# endif //MALLOC_FAILURE_MESSAGE
+
+typedef  struct s_data
+{
+	t_list	*map;
+	mlx_t	*mlx;
+	mlx_image_t	*image;
+}	t_data;
+
+void	handle_error(const char *message);
+void	handle_mlx(t_data *data);
+t_list	*parse_map(char *map_str);
+void	render_map(t_data *data);
 
 #endif //FDF_H
