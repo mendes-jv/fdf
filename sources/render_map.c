@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_map.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jovicto2 <jovicto2@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jovicto2 <jovicto2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 22:23:34 by jovicto2          #+#    #+#             */
-/*   Updated: 2023/10/11 22:32:18 by jovicto2         ###   ########.org.br   */
+/*   Updated: 2023/10/13 20:22:20 by jovicto2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ void	render_map(t_data *data)
 	size_t	ordinate;
 	size_t	abscissa;
 
-	node = data->map;
+	node = data->map->list;
 	column = 0;
 	edges_length = 100;
 	ordinate = 0;
 	abscissa = 0;
 	while (node)
 	{
-		while (column <= 10)
+		while (column <= data->map->width)
 		{
 			if (node->next)
 			{

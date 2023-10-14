@@ -13,21 +13,30 @@
 #include "../includes/fdf.h"
 
 static void read_map(t_list **list, int map_fd);
-static void	split_line(t_list *list);
+static void	split_line(t_list **list);
 static void	parse_line(t_list *list);
 
-t_list *parse_map(char *map_str)
+t_map	*parse_map(char *map_str)
 {
 	int		map_fd;
-	t_list	*map;
+	t_map	*map;
+	t_list	*node;
 
 	map_fd = open(map_str, O_RDONLY);
-	map = NULL;
-	if (map_fd == -2)
+	if (map_fd == -1)
 		handle_error(OPEN_FAILURE_MESSAGE);
-	read_map(&map, map_fd);
-	split_line(map);
-	parse_line(map);
+	map = ft_calloc(1,sizeof(t_map));
+	read_map(&map->list, map_fd);
+	split_line(&map->list);
+	map->height = ft_lstsize(map->list);
+	map->width = ft_count_if(map->list->content, (int (*)(char *)) ft_strlen);
+	parse_line(map->list);
+	node = map->list;
+	for (size_t i = 0; i != map->width - 1; ++i)
+	{
+		ft_printf("%-2i", ((int *)node->content)[i]);
+		node = node->next;
+	}
 	return (map);
 }
 
@@ -54,18 +63,18 @@ static void read_map(t_list **list, int map_fd) {
 	}
 }
 
-static void	split_line(t_list *list)
+static void	split_line(t_list **list)
 {
 	t_list	*node;
-	char	*temp_content;
+	char	*old_content;
 
-	node = list;
+	node = *list;
 	ft_printf("\nSplitted content:\n");
 	while (node)
 	{
-		temp_content = node->content;
+		old_content = node->content;
 		node->content = ft_split(node->content, ' ');
-		free(temp_content);
+		free(old_content);
 		for (int i = 0; ((char **)node->content)[i]; i++)
 			ft_printf("%-2s", ((char **)node->content)[i]);
 		node = node->next;
@@ -97,4 +106,5 @@ static void	parse_line(t_list *list)
 		ft_printf("\n");
 		node = node->next;
 	}
+	ft_printf("\n");
 }
