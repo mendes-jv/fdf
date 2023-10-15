@@ -12,39 +12,43 @@
 
 #include "../includes/fdf.h"
 
-static void	hook(void *parameter);
-static void	mlx_handle(void);
+static void initialize_data(char *map_path);
 
 int	main(int argc, char **argv) {
+
 	if (!argv || argc != 2)
-		error_handle(ARGUMENTS_ERROR_MESSAGE);
-	map_handle(argv[1]);
-	mlx_handle();
+		handle_error(ARGUMENTS_ERROR_MESSAGE);
+	initialize_data(argv[1]);
 	return (EXIT_SUCCESS);
 }
 
-void	hook(void *parameter)
-{
-	if (mlx_is_key_down((mlx_t *)parameter, MLX_KEY_ESCAPE))
-		mlx_close_window((mlx_t *)parameter);
-}
+static void	initialize_data(char *map_path) {
+	t_list	*node;
+	t_data	*data;
 
-void mlx_handle(void)
-{
-	mlx_t *mlx;
-	mlx_image_t *image;
-
-	mlx_set_setting(MLX_MAXIMIZED, true);
-	mlx_set_setting(MLX_STRETCH_IMAGE, true);
-	mlx = mlx_init(WIDTH, HEIGHT, PROGRAM_NAME, true);
-	image = mlx_new_image(mlx, WIDTH, HEIGHT);
-	if (!mlx || !image || mlx_image_to_window(mlx, image, 0, 0) == -1)
+	data = ft_calloc(1 ,sizeof(t_data));
+	data->map = parse_map(map_path);
+	node = data->map->list;
+	ft_printf("\nParsed map content:\n");
+	while (node)
 	{
-		if (mlx)
-			mlx_close_window(mlx);
-		error_handle(mlx_strerror(mlx_errno));
+		for (size_t i = 0; i != data->map->width; ++i)
+			ft_printf("%-2i", ((int *) node->content)[i]);
+		node = node->next;
+		ft_printf("\n");
 	}
-	mlx_loop_hook(mlx, hook, mlx);
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	ft_printf("width -> %i\n", data->map->width);
+	ft_printf("height -> %i\n", data->map->height);
+	handle_mlx(data);
 }
+
+int	ft_count_if(char **array, int (*f)(char*))
+{
+	int	count;
+
+	count = 0;
+	while (*array)
+		if (f(*(array++)))
+			count++;
+	return (count);
+} //TODO: remove this function

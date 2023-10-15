@@ -36,7 +36,7 @@ MLX_FLAGS		:= -ldl -lglfw -pthread -lm
 
 # Sources
 
-SOURCE_FILES	:= fdf map_handle error_handle
+SOURCE_FILES	:= fdf handle_error handle_mlx parse_map render_map
 
 SOURCES			:= $(addprefix $(SOURCES_DIR), $(addsuffix .c, $(SOURCE_FILES)))
 OBJECTS			:= $(addprefix $(OBJECTS_DIR), $(addsuffix .o, $(SOURCE_FILES)))
