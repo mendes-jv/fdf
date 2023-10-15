@@ -14,13 +14,12 @@
 
 static void read_map(t_list **list, int map_fd);
 static void	split_line(t_list **list);
-static void	parse_line(t_list *list);
+static void	parse_line(t_list **list, size_t width);
 
 t_map	*parse_map(char *map_str)
 {
 	int		map_fd;
 	t_map	*map;
-	t_list	*node;
 
 	map_fd = open(map_str, O_RDONLY);
 	if (map_fd == -1)
@@ -30,17 +29,12 @@ t_map	*parse_map(char *map_str)
 	split_line(&map->list);
 	map->height = ft_lstsize(map->list);
 	map->width = ft_count_if(map->list->content, (int (*)(char *)) ft_strlen);
-	parse_line(map->list);
-	node = map->list;
-	for (size_t i = 0; i != map->width - 1; ++i)
-	{
-		ft_printf("%-2i", ((int *)node->content)[i]);
-		node = node->next;
-	}
+	parse_line(&map->list, map->width);
 	return (map);
 }
 
-static void read_map(t_list **list, int map_fd) {
+static void read_map(t_list **list, int map_fd)
+{
 	t_list 	*node;
 	char	*temp_line;
 
@@ -81,30 +75,28 @@ static void	split_line(t_list **list)
 	}
 }
 
-static void	parse_line(t_list *list)
+static void	parse_line(t_list **list, size_t width)
 {
 	t_list	*node;
 	int 	*new_node;
-	int		index;
-	int		i;
+	size_t 	index;
 
-	node = list;
+	node = *list;
 	index = 0;
 	ft_printf("\nPost itoa content:\n");
 	while (node)
 	{
 		while (((char **)node->content)[index])
 			index++;
-		new_node = ft_calloc(index, sizeof(int));
-		i = index;
+		new_node = ft_calloc(width, sizeof(int));
+		index = width;
 		while (index--)
 			new_node[index] = ft_atoi(((char **)node->content)[index]);
 		free(node->content);
 		node->content = new_node;
-		for (int j = 0; i != j; ++j)
-			ft_printf("%-2i", ((int *)node->content)[j]);
+		for (size_t i = 0; i != width; ++i)
+			ft_printf("%-2i", ((int *)node->content)[i]);
 		ft_printf("\n");
 		node = node->next;
 	}
-	ft_printf("\n");
 }

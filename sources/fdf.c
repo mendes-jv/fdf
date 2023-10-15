@@ -29,16 +29,16 @@ static void	initialize_data(char *map_path) {
 	data = ft_calloc(1 ,sizeof(t_data));
 	data->map = parse_map(map_path);
 	node = data->map->list;
-	ft_printf("\nMap content\n");
+	ft_printf("\nParsed map content:\n");
+	while (node)
+	{
+		for (size_t i = 0; i != data->map->width; ++i)
+			ft_printf("%-2i", ((int *) node->content)[i]);
+		node = node->next;
+		ft_printf("\n");
+	}
 	ft_printf("width -> %i\n", data->map->width);
 	ft_printf("height -> %i\n", data->map->height);
-	ft_printf("map list content: \n");
-	for (size_t i = 0; i != data->map->width - 1; ++i)
-	{
-		ft_printf("%-2i", ((int *)node->content)[i]);
-		node = node->next;
-	}
-	ft_printf("\n");
 	handle_mlx(data);
 }
 

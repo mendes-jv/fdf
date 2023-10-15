@@ -14,6 +14,6 @@
 
 void	handle_error(const char *message)
 {
-	perror(message);
+	write(STDERR_FILENO, message, ft_strlen(message));
 	exit(EXIT_FAILURE);
 }

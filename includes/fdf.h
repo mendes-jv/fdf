@@ -33,12 +33,16 @@
 # endif //PROGRAM_NAME
 
 # ifndef ARGUMENTS_ERROR_MESSAGE
-#  define ARGUMENTS_ERROR_MESSAGE "Invalid arguments.\nUsage: ./fdf <map_file>/n"
+#  define ARGUMENTS_ERROR_MESSAGE "Invalid arguments\nUsage: ./fdf <map.fdf>\n"
 # endif //ARGUMENTS_ERROR_MESSAGE
 
 # ifndef OPEN_FAILURE_MESSAGE
-#  define OPEN_FAILURE_MESSAGE "Failed to open file.\n"
+#  define OPEN_FAILURE_MESSAGE "Failed to open file\n"
 # endif //OPEN_FAILURE_MESSAGE
+
+# ifndef EDGE_LENGTH
+#  define EDGE_LENGTH 50
+# endif //EDGE_LENGTH
 
 typedef	struct s_map
 {
