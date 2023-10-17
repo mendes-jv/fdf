@@ -37,5 +37,7 @@ void	hook(t_data *data)
 {
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(data->mlx);
-	render_map(data);
+	bresenham(data->image, isometric, (t_point){ 10, 10, 10},
+			  (t_point){ 10, 50, -10});
+//	render_map(data, bresenham, isometric);
 }

@@ -100,3 +100,4 @@ static void	parse_line(t_list **list, size_t width)
 		node = node->next;
 	}
 }
+//TODO: Improve this shit while(node) in all functions
