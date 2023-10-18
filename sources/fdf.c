@@ -33,7 +33,7 @@ static void	initialize_data(char *map_path) {
 	while (node)
 	{
 		for (size_t i = 0; i != data->map->width; ++i)
-			ft_printf("%-2i", ((int *) node->content)[i]);
+			ft_printf("%-3i", ((int *) node->content)[i]);
 		node = node->next;
 		ft_printf("\n");
 	}

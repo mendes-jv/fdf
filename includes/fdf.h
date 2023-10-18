@@ -79,7 +79,7 @@ void	handle_mlx(t_data *data);
 t_map	*parse_map(char *map_str);
 void	render_map(t_data *data, t_draw_f d_f, t_proj_f p_f);
 int		ft_count_if(char **tab, int (*f)(char*));
-t_point isometric(t_point p);
-void bresenham(mlx_image_t *image, t_proj_f f, t_point p1, t_point p2);
+t_point	isometric(t_point p);
+void	bresenham(mlx_image_t *image, t_proj_f f, t_point p1, t_point p2);
 
 #endif //FDF_H
