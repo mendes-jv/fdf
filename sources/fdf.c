@@ -46,7 +46,7 @@ static void initialize_data(char *map_path, t_data **data)
 	ft_printf("height -> %i\n", (*data)->map->height);
 }
 
-void free_data(t_data *data)
+static void free_data(t_data *data)
 {
 	ft_lstclear(&data->map->list, free);
 	free(data->map);
