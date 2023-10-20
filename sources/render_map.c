@@ -12,37 +12,80 @@
 
 #include "../includes/fdf.h"
 
-void	render_map(t_data *data)
+void	render_map(t_data *data, t_draw_f d_f, t_proj_f p_f)
 {
-	t_list	*node;
-	size_t 	column;
-	size_t	edge;
-	size_t	ordinate;
-	size_t	abscissa;
+	t_list 	*node;
+	double	line;
+	double	column;
 
 	node = data->map->list;
-	column = 0;
-	edge = EDGE_LENGTH;
-	ordinate = 0;
-	abscissa = 0;
-	while (node)
+	line = 0;
+	while (line < (double)data->map->height)
 	{
-		while (++column <= data->map->width)
-		{
-			if (node->next)
-			{
-				while (edge--)
-					mlx_put_pixel(data->image, abscissa, ordinate++, 0xFFFFFFFF);
-				edge = EDGE_LENGTH;
-				ordinate -= EDGE_LENGTH;
-			}
-			while (edge-- && column < data->map->width)
-				mlx_put_pixel(data->image, abscissa++, ordinate, 0xFFFFFFFF);
-			edge = EDGE_LENGTH;
-		}
-		abscissa = 0;
 		column = 0;
-		ordinate += EDGE_LENGTH;
+		while (column < (double)data->map->width)
+		{
+			if (column < (double)data->map->width - 1)
+				d_f(data->image, p_f, (t_point){column, line,((int *)
+				node->content)[(int)column]},(t_point){column + 1, line, (
+						(int *)node->content)[(int)column + 1]});
+			if (line < (double)data->map->height - 1)
+				d_f(data->image, p_f, (t_point){column, line,((int *)
+				node->content)[(int)column]},(t_point){column, line + 1, (
+						(int *)node->next->content)[(int)column]});
+			column++;
+		}
+		line++;
 		node = node->next;
+	}
+}
+
+t_point	true_isometric(t_point p)
+{
+	t_point	new_p;
+	new_p.x = (p.x - p.z) / sqrt(2);
+	new_p.y = (p.x + (2 * p.y) + p.z) / sqrt(6);
+	new_p.z = p.z;
+	return (new_p);
+}
+
+t_point	isometric(t_point p)
+{
+	t_point	new_p;
+	new_p.x = (p.x - p.y) * cos(0.5235988);
+	new_p.y = -p.z + (p.x + p.y) * sin(0.5235988);
+	new_p.z = p.z;
+	return (new_p);
+}
+
+void	bresenham(mlx_image_t *image, t_proj_f p_f, t_point p1, t_point p2)
+{
+	double			x_ratio;
+	double			y_ratio;
+	double			bigger_axis;
+	unsigned int	color;
+
+	if(p1.z || p2.z)
+		color = 0xFF0000FF;
+	else
+		color = 0xFFFFFFFF;
+	p1.x *= EDGE_LENGTH;
+	p1.y *= EDGE_LENGTH;
+	p2.x *= EDGE_LENGTH;
+	p2.y *= EDGE_LENGTH;
+	p1 = p_f(p1);
+	p2 = p_f(p2);
+	x_ratio = p2.x - p1.x;
+	y_ratio = p2.y - p1.y;
+	bigger_axis = fmax(fabs(x_ratio), fabs(y_ratio));
+	x_ratio /= bigger_axis;
+	y_ratio /= bigger_axis;
+	p1.x += 500;
+	p2.x += 500;
+	while ((int)(p1.x - p2.x) || (int)(p1.y - p2.y))
+	{
+		mlx_put_pixel(image, (uint32_t)p1.x, (uint32_t)p1.y, color);
+		p1.x += x_ratio;
+		p1.y += y_ratio;
 	}
 }

@@ -28,7 +28,7 @@ t_map	*parse_map(char *map_str)
 	read_map(&map->list, map_fd);
 	split_line(&map->list);
 	map->height = ft_lstsize(map->list);
-	map->width = ft_count_if(map->list->content, (int (*)(char *)) ft_strlen);
+	map->width = ft_count_if(map->list->content, ft_strlen);
 	parse_line(&map->list, map->width);
 	return (map);
 }
@@ -63,14 +63,14 @@ static void	split_line(t_list **list)
 	char	*old_content;
 
 	node = *list;
-	ft_printf("\nSplitted content:\n");
+	ft_printf("\nSplitted content:\n ");
 	while (node)
 	{
 		old_content = node->content;
 		node->content = ft_split(node->content, ' ');
 		free(old_content);
 		for (int i = 0; ((char **)node->content)[i]; i++)
-			ft_printf("%-2s", ((char **)node->content)[i]);
+			ft_printf("%-3s", ((char **)node->content)[i]);
 		node = node->next;
 	}
 }
@@ -92,11 +92,13 @@ static void	parse_line(t_list **list, size_t width)
 		index = width;
 		while (index--)
 			new_node[index] = ft_atoi(((char **)node->content)[index]);
+		ft_foreach_str(node->content, width, (void (*)(char *)) free);
 		free(node->content);
 		node->content = new_node;
 		for (size_t i = 0; i != width; ++i)
-			ft_printf("%-2i", ((int *)node->content)[i]);
+			ft_printf("%-3i", ((int *)node->content)[i]);
 		ft_printf("\n");
 		node = node->next;
 	}
 }
+//TODO: Improve this shit while(node) in all functions
