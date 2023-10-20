@@ -28,7 +28,7 @@ t_map	*parse_map(char *map_str)
 	read_map(&map->list, map_fd);
 	split_line(&map->list);
 	map->height = ft_lstsize(map->list);
-	map->width = ft_count_if(map->list->content, (int (*)(char *)) ft_strlen);
+	map->width = ft_count_if(map->list->content, ft_strlen);
 	parse_line(&map->list, map->width);
 	return (map);
 }
@@ -92,6 +92,7 @@ static void	parse_line(t_list **list, size_t width)
 		index = width;
 		while (index--)
 			new_node[index] = ft_atoi(((char **)node->content)[index]);
+		ft_foreach_str(node->content, width, (void (*)(char *)) free);
 		free(node->content);
 		node->content = new_node;
 		for (size_t i = 0; i != width; ++i)

@@ -65,14 +65,14 @@ void	bresenham(mlx_image_t *image, t_proj_f p_f, t_point p1, t_point p2)
 	double			bigger_axis;
 	unsigned int	color;
 
-//	if(p1.z || p2.z)
-//		color = 0xFF0000FF;
-//	else
-//		color = 0xFFFFFFFF;
-//	p1.x *= EDGE_LENGTH;
-//	p1.y *= EDGE_LENGTH;
-//	p2.x *= EDGE_LENGTH;
-//	p2.y *= EDGE_LENGTH;
+	if(p1.z || p2.z)
+		color = 0xFF0000FF;
+	else
+		color = 0xFFFFFFFF;
+	p1.x *= EDGE_LENGTH;
+	p1.y *= EDGE_LENGTH;
+	p2.x *= EDGE_LENGTH;
+	p2.y *= EDGE_LENGTH;
 	p1 = p_f(p1);
 	p2 = p_f(p2);
 	x_ratio = p2.x - p1.x;
@@ -80,8 +80,8 @@ void	bresenham(mlx_image_t *image, t_proj_f p_f, t_point p1, t_point p2)
 	bigger_axis = fmax(fabs(x_ratio), fabs(y_ratio));
 	x_ratio /= bigger_axis;
 	y_ratio /= bigger_axis;
-//	p1.x += 500;
-//	p2.x += 500;
+	p1.x += 500;
+	p2.x += 500;
 	while ((int)(p1.x - p2.x) || (int)(p1.y - p2.y))
 	{
 		mlx_put_pixel(image, (uint32_t)p1.x, (uint32_t)p1.y, color);

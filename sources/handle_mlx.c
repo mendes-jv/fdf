@@ -16,7 +16,7 @@ void hook(t_data *data);
 
 void handle_mlx(t_data *data)
 {
-//	mlx_set_setting(MLX_MAXIMIZED, true);
+	mlx_set_setting(MLX_MAXIMIZED, true);
 //	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	data->mlx = mlx_init(WIDTH, HEIGHT, PROGRAM_NAME, true);
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
@@ -36,6 +36,9 @@ void handle_mlx(t_data *data)
 void	hook(t_data *data)
 {
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
+	{
 		mlx_close_window(data->mlx);
+		exit(EXIT_SUCCESS);
+	}
 	render_map(data, bresenham, isometric);
 }

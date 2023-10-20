@@ -16,6 +16,7 @@
 //Headers
 # include "../libraries/libft/includes/libft.h"
 # include "../libraries/mlx42/include/MLX42/MLX42.h"
+# include <errno.h>
 # include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
@@ -40,7 +41,7 @@
 # endif //ARGUMENTS_ERROR_MESSAGE
 
 # ifndef OPEN_FAILURE_MESSAGE
-#  define OPEN_FAILURE_MESSAGE "Failed to open file\n"
+#  define OPEN_FAILURE_MESSAGE "Failed to open file"
 # endif //OPEN_FAILURE_MESSAGE
 
 # ifndef EDGE_LENGTH
@@ -78,7 +79,8 @@ void	handle_error(const char *message);
 void	handle_mlx(t_data *data);
 t_map	*parse_map(char *map_str);
 void	render_map(t_data *data, t_draw_f d_f, t_proj_f p_f);
-int		ft_count_if(char **tab, int (*f)(char*));
+int		ft_count_if(char **array, size_t (*f)(const char *));
+void	ft_foreach_str(char **array, size_t length, void (*f)(char *));
 t_point	isometric(t_point p);
 void	bresenham(mlx_image_t *image, t_proj_f f, t_point p1, t_point p2);
 
