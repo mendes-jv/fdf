@@ -15,7 +15,7 @@
 void handle_mlx(t_data *data)
 {
 	mlx_set_setting(MLX_MAXIMIZED, true);
-//	mlx_set_setting(MLX_STRETCH_IMAGE, true);
+	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	data->mlx = mlx_init(WIDTH, HEIGHT, PROGRAM_NAME, true);
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (!data->mlx

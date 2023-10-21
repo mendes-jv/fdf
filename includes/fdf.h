@@ -45,7 +45,20 @@
 # endif //OPEN_FAILURE_MESSAGE
 
 // TYPE DEFINITIONS
-typedef	struct s_map
+
+typedef struct s_point
+{
+	double	x;
+	double	y;
+	double	z;
+}	t_point;
+
+typedef struct s_camera
+{
+	t_point	*position;
+}	t_camera;
+
+typedef struct s_map
 {
 	t_list	*list;
 	size_t	width;
@@ -54,18 +67,11 @@ typedef	struct s_map
 
 typedef struct s_data
 {
+	t_camera	*camera;
 	t_map		*map;
-	mlx_t		*mlx;
 	mlx_image_t	*image;
-	int			zoom;
+	mlx_t		*mlx;
 }	t_data;
-
-typedef  struct s_point
-{
-	double	x;
-	double	y;
-	double	z;
-}	t_point;
 
 typedef t_point (*t_proj_f)(t_point);
 

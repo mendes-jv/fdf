@@ -12,8 +12,9 @@
 
 #include "../includes/fdf.h"
 
-static void	zoom(int zoom_in, int zoom_out, t_data *data);
 static void	manage_render(t_data *data);
+static void	manage_zoom(int zoom_in, int zoom_out, double *zoom);
+static void	set_render_placement(t_data *data);
 
 void	hook(t_data *data)
 {
@@ -22,26 +23,47 @@ void	hook(t_data *data)
 		mlx_close_window(data->mlx);
 		exit(EXIT_SUCCESS);
 	}
-	zoom(mlx_is_key_down(data->mlx, MLX_KEY_EQUAL),
-		mlx_is_key_down(data->mlx, MLX_KEY_MINUS), data);
+	set_render_placement(data);
 	manage_render(data);
 }
 
 void	scroll_hook(double scroll_x, double scroll_y, t_data *data)
 {
-	zoom(scroll_x > 0 || scroll_y > 0, scroll_x < 0 || scroll_y < 0, data);
+	manage_zoom(scroll_x > 0 || scroll_y > 0, scroll_x < 0 || scroll_y < 0,
+				&data->camera->position->z);
 	manage_render(data);
 }
 
-static void	zoom(int zoom_in, int zoom_out, t_data *data)
+static void	manage_axis(mlx_t *mlx, int *key_up, int *key_down, double *axis)
 {
-	if (zoom_in)
-		data->zoom++;
-	else if (zoom_out)
-		data->zoom--;
+	if (mlx_is_key_down(mlx, key_down[0]) || mlx_is_key_down(mlx, key_down[1]))
+		*axis += 10;
+	else if (mlx_is_key_down(mlx, key_up[0]) || mlx_is_key_down(mlx, key_up[1]))
+		*axis -= 10;
 }
 
-void	manage_render(t_data *data)
+static void manage_translation(t_data *data)
+{
+	manage_axis(data->mlx, (int [2]){MLX_KEY_UP, MLX_KEY_W}, (int [2]){MLX_KEY_DOWN, MLX_KEY_S}, &data->camera->position->y);
+	manage_axis(data->mlx, (int [2]){MLX_KEY_LEFT, MLX_KEY_A}, (int [2]){MLX_KEY_RIGHT, MLX_KEY_D}, &data->camera->position->x);
+}
+
+static void	manage_zoom(int zoom_in, int zoom_out, double *zoom)
+{
+	if (zoom_in)
+		(*zoom)++;
+	else if (zoom_out)
+		(*zoom)--;
+}
+
+static void	set_render_placement(t_data *data)
+{
+	manage_zoom(mlx_is_key_down(data->mlx, MLX_KEY_EQUAL),
+				mlx_is_key_down(data->mlx, MLX_KEY_MINUS), &data->camera->position->z);
+	manage_translation(data);
+}
+
+static void	manage_render(t_data *data)
 {
 	mlx_delete_image(data->mlx, data->image);
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);

@@ -44,6 +44,7 @@ void	render_map(t_data *data, t_draw_f d_f, t_proj_f p_f)
 t_point	true_isometric(t_point p)
 {
 	t_point	new_p;
+
 	new_p.x = (p.x - p.z) / sqrt(2);
 	new_p.y = (p.x + (2 * p.y) + p.z) / sqrt(6);
 	new_p.z = p.z;
@@ -53,6 +54,7 @@ t_point	true_isometric(t_point p)
 t_point	isometric(t_point p)
 {
 	t_point	new_p;
+
 	new_p.x = (p.x - p.y) * cos(0.5235988);
 	new_p.y = (p.x + p.y) * sin(0.5235988) - p.z;
 	new_p.z = p.z;
@@ -72,10 +74,10 @@ void	bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 		color = 0x0000FFFF;
 	else
 		color = 0xFFFFFFFF;
-	p1.x *= data->zoom;
-	p1.y *= data->zoom;
-	p2.x *= data->zoom;
-	p2.y *= data->zoom;
+	p1.x *= data->camera->position->z;
+	p1.y *= data->camera->position->z;
+	p2.x *= data->camera->position->z;
+	p2.y *= data->camera->position->z;
 	p1 = p_f(p1);
 	p2 = p_f(p2);
 	x_ratio = p2.x - p1.x;
@@ -83,8 +85,10 @@ void	bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	bigger_axis = fmax(fabs(x_ratio), fabs(y_ratio));
 	x_ratio /= bigger_axis;
 	y_ratio /= bigger_axis;
-	p1.x += 500;
-	p2.x += 500;
+	p1.x += data->camera->position->x;
+	p2.x += data->camera->position->x;
+	p1.y += data->camera->position->y;
+	p2.y += data->camera->position->y;
 	while ((int)(p1.x - p2.x) || (int)(p1.y - p2.y))
 	{
 		mlx_put_pixel(data->image, (uint32_t)p1.x, (uint32_t)p1.y, color);
