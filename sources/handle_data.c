@@ -20,10 +20,14 @@ void initialize_data(char *map_path, t_data **data)
 	(*data)->map = parse_map(map_path);
 	(*data)->camera = ft_calloc(1, sizeof(t_camera));
 	(*data)->camera->position = ft_calloc(1, sizeof(t_point));
+	(*data)->camera->rotation = ft_calloc(1, sizeof(t_point));
 	node = (*data)->map->list;
 	(*data)->camera->position->x = 500;
 	(*data)->camera->position->y = 500;
 	(*data)->camera->position->z = 0;
+	(*data)->camera->rotation->x = 0;
+	(*data)->camera->rotation->y = 0;
+	(*data)->camera->rotation->z = 0;
 	ft_printf("\nParsed map content:\n");
 	while (node)
 	{
@@ -39,6 +43,7 @@ void initialize_data(char *map_path, t_data **data)
 void free_data(t_data *data)
 {
 	ft_lstclear(&data->map->list, free);
+	free(data->camera->rotation);
 	free(data->camera->position);
 	free(data->camera);
 	free(data->map);

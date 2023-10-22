@@ -55,8 +55,38 @@ t_point	isometric(t_point p)
 {
 	t_point	new_p;
 
-	new_p.x = (p.x - p.y) * cos(0.5235988);
-	new_p.y = (p.x + p.y) * sin(0.5235988) - p.z;
+	new_p.x = (p.x - p.y) * cos(0.8);
+	new_p.y = (p.x + p.y) * sin(0.8) - p.z;
+	new_p.z = p.z;
+	return (new_p);
+}
+
+t_point rotate_x(t_point p, double angle)
+{
+	t_point	new_p;
+
+	new_p.x = p.x;
+	new_p.y = p.y * cos(angle) - p.z * sin(angle);
+	new_p.z = p.y * sin(angle) + p.z * cos(angle);
+	return (new_p);
+}
+
+t_point rotate_y(t_point p, double angle)
+{
+	t_point	new_p;
+
+	new_p.x = p.x * cos(angle) + p.z * sin(angle);
+	new_p.y = p.y;
+	new_p.z = -p.x * sin(angle) + p.z * cos(angle);
+	return (new_p);
+}
+
+t_point	rotate_z(t_point p, double angle)
+{
+	t_point	new_p;
+
+	new_p.x = p.x * cos(angle) - p.y * sin(angle);
+	new_p.y = p.x * sin(angle) + p.y * cos(angle);
 	new_p.z = p.z;
 	return (new_p);
 }
@@ -78,8 +108,16 @@ void	bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	p1.y *= data->camera->position->z;
 	p2.x *= data->camera->position->z;
 	p2.y *= data->camera->position->z;
+	p1 = rotate_x(p1, data->camera->rotation->x);
+	p2 = rotate_x(p2, data->camera->rotation->x);
+	p1 = rotate_y(p1, data->camera->rotation->y);
+	p2 = rotate_y(p2, data->camera->rotation->y);
+	p1 = rotate_z(p1, data->camera->rotation->z);
+	p2 = rotate_z(p2, data->camera->rotation->z);
 	p1 = p_f(p1);
 	p2 = p_f(p2);
+	//TODO: Improve rotation and bresenham algorithm.
+	//TODO: Center map on rendering and on rotate.
 	x_ratio = p2.x - p1.x;
 	y_ratio = p2.y - p1.y;
 	bigger_axis = fmax(fabs(x_ratio), fabs(y_ratio));

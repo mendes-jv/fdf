@@ -44,6 +44,10 @@
 #  define OPEN_FAILURE_MESSAGE "Failed to open file"
 # endif //OPEN_FAILURE_MESSAGE
 
+# ifndef TWO_DEGREE_IN_RADIAN
+#  define TWO_DEGREE_IN_RADIAN 0.034906585
+# endif //TWO_DEGREE_IN_RADIAN
+
 // TYPE DEFINITIONS
 
 typedef struct s_point
@@ -56,6 +60,7 @@ typedef struct s_point
 typedef struct s_camera
 {
 	t_point	*position;
+	t_point *rotation;
 }	t_camera;
 
 typedef struct s_map
