@@ -65,12 +65,30 @@ static void	manage_translation(t_data *data)
 	manage_axis_translation(data->mlx, (int [2]){MLX_KEY_LEFT, MLX_KEY_A}, (int [2]){MLX_KEY_RIGHT, MLX_KEY_D}, &data->camera->position->x);
 }
 
+static void manage_centralization(t_data *data)
+{
+	if (mlx_is_key_down(data->mlx, MLX_KEY_SPACE))
+	{
+		data->camera->position->x = (float) WIDTH / 2;
+		data->camera->position->y = (float) HEIGHT / 2;
+		data->camera->position->z = 10;
+		data->camera->rotation->x = 0;
+		data->camera->rotation->y = 0;
+		data->camera->rotation->z = 0;
+	}
+}
+
 static void	manage_zoom(int zoom_in, int zoom_out, double *zoom)
 {
+	double zoom_speed;
+
+	zoom_speed = 1;
+	if (*zoom < 1)
+		zoom_speed = 0.1;
 	if (zoom_in)
-		(*zoom)++;
+		(*zoom) += zoom_speed;
 	else if (zoom_out)
-		(*zoom)--;
+		(*zoom) -= zoom_speed;
 	*zoom = fmax(0, *zoom);
 }
 
@@ -80,6 +98,7 @@ static void	set_render_placement(t_data *data)
 				mlx_is_key_down(data->mlx, MLX_KEY_MINUS), &data->camera->position->z);
 	manage_translation(data);
 	manage_rotation(data);
+	manage_centralization(data);
 }
 
 static void	manage_render(t_data *data)

@@ -104,45 +104,36 @@ void	bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 		color = 0x0000FFFF;
 	else
 		color = 0xFFFFFFFF;
+	// CENTERING
 	p1.x -= (float) data->map->width / 2;
 	p1.y -= (float) data->map->height / 2;
 	p2.x -= (float) data->map->width / 2;
 	p2.y -= (float) data->map->height / 2;
+	// ZOOM
 	p1.x *= data->camera->position->z;
 	p1.y *= data->camera->position->z;
 	p2.x *= data->camera->position->z;
 	p2.y *= data->camera->position->z;
-//	p1.x += data->camera->position->x;
-//	p2.x += data->camera->position->x;
-//	p1.y += data->camera->position->y;
-//	p2.y += data->camera->position->y;
-//	p1 = rotate_x(p1, data->camera->rotation->x);
-//	p2 = rotate_x(p2, data->camera->rotation->x);
-//	p1 = rotate_y(p1, data->camera->rotation->y);
-//	p2 = rotate_y(p2, data->camera->rotation->y);
-//	p1 = rotate_z(p1, data->camera->rotation->z);
-//	p2 = rotate_z(p2, data->camera->rotation->z);
+	// ROTATION
+	p1 = rotate_x(p1, data->camera->rotation->x);
+	p2 = rotate_x(p2, data->camera->rotation->x);
+	p1 = rotate_y(p1, data->camera->rotation->y);
+	p2 = rotate_y(p2, data->camera->rotation->y);
+	p1 = rotate_z(p1, data->camera->rotation->z);
+	p2 = rotate_z(p2, data->camera->rotation->z);
+	// PROJECTION
 	p1 = p_f(p1);
 	p2 = p_f(p2);
-//	p1 = rotate_x(p1, data->camera->rotation->x);
-//	p2 = rotate_x(p2, data->camera->rotation->x);
-//	p1 = rotate_y(p1, data->camera->rotation->y);
-//	p2 = rotate_y(p2, data->camera->rotation->y);
-//	p1 = rotate_z(p1, data->camera->rotation->z);
-//	p2 = rotate_z(p2, data->camera->rotation->z);
-//	p1.x += data->camera->position->x;
-//	p2.x += data->camera->position->x;
-//	p1.y += data->camera->position->y;
-//	p2.y += data->camera->position->y;
+	// TRANSLATION
+	p1.x += data->camera->position->x;
+	p2.x += data->camera->position->x;
+	p1.y += data->camera->position->y;
+	p2.y += data->camera->position->y;
 	x_ratio = p2.x - p1.x;
 	y_ratio = p2.y - p1.y;
 	bigger_axis = fmax(fabs(x_ratio), fabs(y_ratio));
 	x_ratio /= bigger_axis;
 	y_ratio /= bigger_axis;
-	p1.x += data->camera->position->x;
-	p2.x += data->camera->position->x;
-	p1.y += data->camera->position->y;
-	p2.y += data->camera->position->y;
 	while ((int)(p1.x - p2.x) || (int)(p1.y - p2.y))
 	{
 		if ((int)p1.x < WIDTH && (int)p1.y < HEIGHT && (int)p1.x > 0 && (int)p1.y > 0)
