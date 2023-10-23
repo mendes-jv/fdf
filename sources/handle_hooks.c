@@ -40,8 +40,8 @@ static void manage_axis_rotation(mlx_t *mlx, int *keys, double *axis)
 		*axis += TWO_DEGREE_IN_RADIAN;
 	else if(mlx_is_key_down(mlx, keys[1]))
 		*axis -= TWO_DEGREE_IN_RADIAN;
-	if (fabs(*axis) > M_PI * 2)
-		*axis -= *axis / fabs(*axis) * M_PI * 2;
+	if (fabs(*axis) > PI_X_2)
+		*axis -= *axis / fabs(*axis) * PI_X_2;
 }
 
 static void	manage_axis_translation(mlx_t *mlx, int *key_up, int *key_down, double *axis)
