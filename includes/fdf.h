@@ -48,8 +48,15 @@
 #  define TWO_DEGREE_IN_RADIAN 0.034906585
 # endif //TWO_DEGREE_IN_RADIAN
 
-// TYPE DEFINITIONS
+# ifndef SIN_0_8
+#  define SIN_0_8 0.71735609089952279
+# endif //SIN_0_8
 
+# ifndef COS_0_8
+#  define COS_0_8 0.69670670934716539
+# endif //COS_0_8
+
+// TYPE DEFINITIONS
 typedef struct s_point
 {
 	double	x;

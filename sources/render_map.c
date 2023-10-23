@@ -55,8 +55,8 @@ t_point	isometric(t_point p)
 {
 	t_point	new_p;
 
-	new_p.x = (p.x - p.y) * cos(0.8);
-	new_p.y = (p.x + p.y) * sin(0.8) - p.z;
+	new_p.x = (p.x - p.y) * COS_0_8;
+	new_p.y = (p.x + p.y) * SIN_0_8 - p.z;
 	new_p.z = p.z;
 	return (new_p);
 }
@@ -112,14 +112,28 @@ void	bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	p1.y *= data->camera->position->z;
 	p2.x *= data->camera->position->z;
 	p2.y *= data->camera->position->z;
-	p1 = rotate_x(p1, data->camera->rotation->x);
-	p2 = rotate_x(p2, data->camera->rotation->x);
-	p1 = rotate_y(p1, data->camera->rotation->y);
-	p2 = rotate_y(p2, data->camera->rotation->y);
-	p1 = rotate_z(p1, data->camera->rotation->z);
-	p2 = rotate_z(p2, data->camera->rotation->z);
+//	p1.x += data->camera->position->x;
+//	p2.x += data->camera->position->x;
+//	p1.y += data->camera->position->y;
+//	p2.y += data->camera->position->y;
+//	p1 = rotate_x(p1, data->camera->rotation->x);
+//	p2 = rotate_x(p2, data->camera->rotation->x);
+//	p1 = rotate_y(p1, data->camera->rotation->y);
+//	p2 = rotate_y(p2, data->camera->rotation->y);
+//	p1 = rotate_z(p1, data->camera->rotation->z);
+//	p2 = rotate_z(p2, data->camera->rotation->z);
 	p1 = p_f(p1);
 	p2 = p_f(p2);
+//	p1 = rotate_x(p1, data->camera->rotation->x);
+//	p2 = rotate_x(p2, data->camera->rotation->x);
+//	p1 = rotate_y(p1, data->camera->rotation->y);
+//	p2 = rotate_y(p2, data->camera->rotation->y);
+//	p1 = rotate_z(p1, data->camera->rotation->z);
+//	p2 = rotate_z(p2, data->camera->rotation->z);
+//	p1.x += data->camera->position->x;
+//	p2.x += data->camera->position->x;
+//	p1.y += data->camera->position->y;
+//	p2.y += data->camera->position->y;
 	x_ratio = p2.x - p1.x;
 	y_ratio = p2.y - p1.y;
 	bigger_axis = fmax(fabs(x_ratio), fabs(y_ratio));
