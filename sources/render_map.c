@@ -104,6 +104,10 @@ void	bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 		color = 0x0000FFFF;
 	else
 		color = 0xFFFFFFFF;
+	p1.x -= (float) data->map->width / 2;
+	p1.y -= (float) data->map->height / 2;
+	p2.x -= (float) data->map->width / 2;
+	p2.y -= (float) data->map->height / 2;
 	p1.x *= data->camera->position->z;
 	p1.y *= data->camera->position->z;
 	p2.x *= data->camera->position->z;
@@ -116,7 +120,6 @@ void	bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	p2 = rotate_z(p2, data->camera->rotation->z);
 	p1 = p_f(p1);
 	p2 = p_f(p2);
-	//TODO: Center map on rendering and on rotate.
 	x_ratio = p2.x - p1.x;
 	y_ratio = p2.y - p1.y;
 	bigger_axis = fmax(fabs(x_ratio), fabs(y_ratio));

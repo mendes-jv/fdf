@@ -22,8 +22,8 @@ void initialize_data(char *map_path, t_data **data)
 	(*data)->camera->position = ft_calloc(1, sizeof(t_point));
 	(*data)->camera->rotation = ft_calloc(1, sizeof(t_point));
 	node = (*data)->map->list;
-	(*data)->camera->position->x = 500;
-	(*data)->camera->position->y = 500;
+	(*data)->camera->position->x = (float) WIDTH / 2;
+	(*data)->camera->position->y = (float) HEIGHT / 2;
 	(*data)->camera->position->z = 0;
 	(*data)->camera->rotation->x = 0;
 	(*data)->camera->rotation->y = 0;
