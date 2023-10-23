@@ -71,6 +71,7 @@ static void	manage_zoom(int zoom_in, int zoom_out, double *zoom)
 		(*zoom)++;
 	else if (zoom_out)
 		(*zoom)--;
+	*zoom = fmax(0, *zoom);
 }
 
 static void	set_render_placement(t_data *data)
