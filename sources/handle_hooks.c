@@ -71,6 +71,10 @@ static void manage_mirroring(t_data *data)
 		data->camera->mirroring->x = 1;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_E))
 		data->camera->mirroring->y = 1;
+	if (mlx_is_key_down(data->mlx, MLX_KEY_1))
+		data->camera->mirroring->x = 0;
+	if (mlx_is_key_down(data->mlx, MLX_KEY_3))
+		data->camera->mirroring->y = 0;
 }
 
 static void manage_centralization(t_data *data)
@@ -119,6 +123,6 @@ static void	manage_render(t_data *data)
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_X))
 		data->projection = NULL;
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_C))
-		;
+		data->projection = apply_orthographic;
 	render_map(data, apply_bresenham, data->projection);
 }

@@ -82,11 +82,13 @@ static void put_menu_text(mlx_t *mlx)
 	mlx_put_string(mlx, "Zoom in -> Scroll up or '+' key", 60, 380);
 	mlx_put_string(mlx, "Mirror by X axis -> 'Q' key", 85, 420);
 	mlx_put_string(mlx, "Mirror by Y axis -> 'E' key", 85, 440);
-	mlx_put_string(mlx, "Centralize -> SPACE key", 100, 480);
-	mlx_put_string(mlx, "True isometric projection -> 'Z' key", 35, 520);
-	mlx_put_string(mlx, "Orthographic projection -> 'C' key", 45, 540);
-	mlx_put_string(mlx, "Zero rotation top view -> 'X' key", 50, 560);
-	mlx_put_string(mlx, "Isometric projection -> 'F' key", 60, 580);
-	mlx_put_string(mlx, "Torus projection -> 'V' key", 85, 600);
-	mlx_put_string(mlx, "Exit -> ESC key", 150, 640);
+	mlx_put_string(mlx, "Reset mirror by X axis -> '1' key", 55, 460);
+	mlx_put_string(mlx, "Reset mirror by Y axis -> '3' key", 55, 480);
+	mlx_put_string(mlx, "Centralize -> SPACE key", 100, 520);
+	mlx_put_string(mlx, "True isometric projection -> 'Z' key", 35, 560);
+	mlx_put_string(mlx, "Orthographic projection -> 'C' key", 45, 580);
+	mlx_put_string(mlx, "Zero rotation top view -> 'X' key", 50, 600);
+	mlx_put_string(mlx, "Isometric projection -> 'F' key", 60, 620);
+	mlx_put_string(mlx, "Torus projection -> 'V' key", 85, 640);
+	mlx_put_string(mlx, "Exit -> ESC key", 150, 680);
 }

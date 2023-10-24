@@ -121,6 +121,12 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	p2 = rotate_y(p2, data->camera->rotation->y);
 	p1 = rotate_z(p1, data->camera->rotation->z);
 	p2 = rotate_z(p2, data->camera->rotation->z);
+	// PROJECTION
+	if (p_f)
+	{
+		p1 = p_f(p1);
+		p2 = p_f(p2);
+	}
 	// MIRRORING
 	if (data->camera->mirroring->x)
 	{
@@ -131,12 +137,6 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	{
 		p1 = rotate_y(p1, M_PI);
 		p2 = rotate_y(p2, M_PI);
-	}
-	// PROJECTION
-	if (p_f)
-	{
-		p1 = p_f(p1);
-		p2 = p_f(p2);
 	}
 	// TRANSLATION
 	p1.x += data->camera->position->x;
