@@ -16,7 +16,7 @@ static void	manage_render(t_data *data);
 static void	manage_zoom(int zoom_in, int zoom_out, double *zoom);
 static void	set_render_placement(t_data *data);
 
-void	hook(t_data *data)
+void	handle_key_hooks(t_data *data)
 {
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 	{
@@ -27,7 +27,7 @@ void	hook(t_data *data)
 	manage_render(data);
 }
 
-void	scroll_hook(double scroll_x, double scroll_y, t_data *data)
+void	handle_scroll_hook(double scroll_x, double scroll_y, t_data *data)
 {
 	manage_zoom(scroll_x > 0 || scroll_y > 0, scroll_x < 0 || scroll_y < 0,
 				&data->camera->position->z);
@@ -77,7 +77,7 @@ static void manage_centralization(t_data *data)
 {
 	if (mlx_is_key_down(data->mlx, MLX_KEY_SPACE))
 	{
-		*(data->camera->position) = (t_point) {(float) WIDTH / 2, (float) HEIGHT / 2, 10};
+		*(data->camera->position) = (t_point) {((float) WIDTH + (float) MENU_WIDTH)/ 2, (float) HEIGHT / 2, (*data->camera->position).z};
 		*(data->camera->rotation) = (t_point) {0, 0, 0};
 		*(data->camera->mirroring) = (t_point) {0, 0, 0};
 	}
@@ -111,13 +111,14 @@ static void	manage_render(t_data *data)
 {
 	mlx_delete_image(data->mlx, data->image);
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	if (mlx_is_key_down(data->mlx, MLX_KEY_Z))
-		data->projection = isometric;
+	render_menu_background(data->image);
+	if (mlx_is_key_down(data->mlx, MLX_KEY_F))
+		data->projection = apply_isometric;
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_Z))
+		data->projection = apply_true_isometric;
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_X))
 		data->projection = NULL;
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_C))
 		;
-	else if (mlx_is_key_down(data->mlx, MLX_KEY_V))
-		;
-	render_map(data, bresenham, data->projection);
+	render_map(data, apply_bresenham, data->projection);
 }

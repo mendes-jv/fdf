@@ -32,6 +32,10 @@
 #  define HEIGHT 1080
 # endif //HEIGHT
 
+# ifndef MENU_WIDTH
+#  define MENU_WIDTH 430
+# endif //MENU_WIDTH
+
 # ifndef PROGRAM_NAME
 #  define PROGRAM_NAME "Fil De Fer"
 # endif //PROGRAM_NAME
@@ -96,17 +100,20 @@ typedef struct s_data
 typedef void (*t_draw_f)(t_data *, t_proj_f, t_point, t_point);
 
 // FUNCTION PROTOTYPES
+t_point	apply_isometric(t_point p);
+t_point	apply_true_isometric(t_point p);
+void	apply_bresenham(t_data *data, t_proj_f f, t_point p1, t_point p2);
 void	handle_error(const char *message);
 void	handle_mlx(t_data *data);
+void	handle_key_hooks(t_data *data);
+void	handle_scroll_hook(double scroll_x, double scroll_y, t_data *data);
 t_map	*parse_map(char *map_str);
 void	render_map(t_data *data, t_draw_f d_f, t_proj_f p_f);
-int		ft_count_if(char **array, size_t (*f)(const char *));
-void	ft_foreach_str(char **array, size_t length, void (*f)(char *));
-t_point	isometric(t_point p);
-void	bresenham(t_data *data, t_proj_f f, t_point p1, t_point p2);
+void	render_menu(t_data *data);
+void	render_menu_background(mlx_image_t *mlx);
 void	initialize_data(char *map_path, t_data **data);
 void	free_data(t_data *data);
-void	hook(t_data *data);
-void	scroll_hook(double scroll_x, double scroll_y, t_data *data);
+int		ft_count_if(char **array, size_t (*f)(const char *));
+void	ft_foreach_str(char **array, size_t length, void (*f)(char *));
 
 #endif //FDF_H

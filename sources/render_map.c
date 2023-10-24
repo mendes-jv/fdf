@@ -41,7 +41,7 @@ void	render_map(t_data *data, t_draw_f d_f, t_proj_f p_f)
 	mlx_image_to_window(data->mlx, data->image, 0, 0);
 }
 
-t_point	true_isometric(t_point p)
+t_point	apply_true_isometric(t_point p)
 {
 	t_point	new_p;
 
@@ -51,7 +51,7 @@ t_point	true_isometric(t_point p)
 	return (new_p);
 }
 
-t_point	isometric(t_point p)
+t_point	apply_isometric(t_point p)
 {
 	t_point	new_p;
 
@@ -91,7 +91,7 @@ t_point	rotate_z(t_point p, double angle)
 	return (new_p);
 }
 
-void	bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
+void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 {
 	double x_ratio;
 	double y_ratio;
@@ -148,10 +148,9 @@ void	bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	bigger_axis = fmax(fabs(x_ratio), fabs(y_ratio));
 	x_ratio /= bigger_axis;
 	y_ratio /= bigger_axis;
-	//TODO: SEE RUSSIAN GUY'S VIDEO TO KNOW IF HIS IMPLEMENTATION STOP STUTTERING
 	while ((int)(p1.x - p2.x) || (int)(p1.y - p2.y))
 	{
-		if ((int)p1.x < WIDTH && (int)p1.y < HEIGHT && (int)p1.x > 0 && (int)p1.y > 0)
+		if ((int)p1.x < WIDTH && (int)p1.y < HEIGHT && (int)p1.x > MENU_WIDTH && (int)p1.y >= 0)
 			mlx_put_pixel(data->image, (uint32_t)p1.x, (uint32_t)p1.y, color);
 		p1.x += x_ratio;
 		p1.y += y_ratio;
