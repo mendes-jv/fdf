@@ -26,8 +26,9 @@ void handle_mlx(t_data *data)
 			mlx_close_window(data->mlx);
 		handle_error(mlx_strerror(mlx_errno));
 	}
-	mlx_scroll_hook(data->mlx, (mlx_scrollfunc) scroll_hook, data);
-	mlx_loop_hook(data->mlx, (void (*)(void *)) hook, data);
+	render_menu(data);
+	mlx_scroll_hook(data->mlx, (mlx_scrollfunc) handle_scroll_hook, data);
+	mlx_loop_hook(data->mlx, (void (*)(void *)) handle_key_hooks, data);
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);
 }

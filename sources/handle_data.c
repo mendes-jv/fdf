@@ -23,8 +23,8 @@ void initialize_data(char *map_path, t_data **data)
 	(*data)->camera->rotation = ft_calloc(1, sizeof(t_point));
 	(*data)->camera->mirroring = ft_calloc(1, sizeof(t_point));
 	node = (*data)->map->list;
-	(*data)->projection = isometric;
-	(*data)->camera->position->x = (float) WIDTH / 2;
+	(*data)->projection = apply_isometric;
+	(*data)->camera->position->x =  ((float) WIDTH + (float) MENU_WIDTH) / 2;
 	(*data)->camera->position->y = (float) HEIGHT / 2;
 	(*data)->camera->position->z = 10;
 	(*data)->camera->rotation->x = 0;
