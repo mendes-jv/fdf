@@ -93,12 +93,12 @@ t_point	rotate_z(t_point p, double angle)
 
 void	bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 {
-	double			x_ratio;
-	double			y_ratio;
-	double			bigger_axis;
-	unsigned int	color;
+	double x_ratio;
+	double y_ratio;
+	double bigger_axis;
+	unsigned int color;
 
-	if (p1.z > 0|| p2.z > 0)
+	if (p1.z > 0 || p2.z > 0)
 		color = 0xFF0000FF;
 	else if (p1.z < 0 || p2.z < 0)
 		color = 0x0000FFFF;
@@ -121,9 +121,23 @@ void	bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	p2 = rotate_y(p2, data->camera->rotation->y);
 	p1 = rotate_z(p1, data->camera->rotation->z);
 	p2 = rotate_z(p2, data->camera->rotation->z);
+	// MIRRORING
+	if (data->camera->mirroring->x)
+	{
+		p1 = rotate_x(p1, M_PI);
+		p2 = rotate_x(p2, M_PI);
+	}
+	if (data->camera->mirroring->y)
+	{
+		p1 = rotate_y(p1, M_PI);
+		p2 = rotate_y(p2, M_PI);
+	}
 	// PROJECTION
-	p1 = p_f(p1);
-	p2 = p_f(p2);
+	if (p_f)
+	{
+		p1 = p_f(p1);
+		p2 = p_f(p2);
+	}
 	// TRANSLATION
 	p1.x += data->camera->position->x;
 	p2.x += data->camera->position->x;
@@ -134,6 +148,7 @@ void	bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	bigger_axis = fmax(fabs(x_ratio), fabs(y_ratio));
 	x_ratio /= bigger_axis;
 	y_ratio /= bigger_axis;
+	//TODO: SEE RUSSIAN GUY'S VIDEO TO KNOW IF HIS IMPLEMENTATION STOP STUTTERING
 	while ((int)(p1.x - p2.x) || (int)(p1.y - p2.y))
 	{
 		if ((int)p1.x < WIDTH && (int)p1.y < HEIGHT && (int)p1.x > 0 && (int)p1.y > 0)

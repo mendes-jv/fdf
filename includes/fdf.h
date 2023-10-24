@@ -71,7 +71,8 @@ typedef struct s_point
 typedef struct s_camera
 {
 	t_point	*position;
-	t_point *rotation;
+	t_point	*rotation;
+	t_point *mirroring;
 }	t_camera;
 
 typedef struct s_map
@@ -81,15 +82,16 @@ typedef struct s_map
 	size_t	height;
 }	t_map;
 
+typedef t_point (*t_proj_f)(t_point);
+
 typedef struct s_data
 {
 	t_camera	*camera;
 	t_map		*map;
+	t_proj_f	projection;
 	mlx_image_t	*image;
 	mlx_t		*mlx;
 }	t_data;
-
-typedef t_point (*t_proj_f)(t_point);
 
 typedef void (*t_draw_f)(t_data *, t_proj_f, t_point, t_point);
 

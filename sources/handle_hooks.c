@@ -65,16 +65,21 @@ static void	manage_translation(t_data *data)
 	manage_axis_translation(data->mlx, (int [2]){MLX_KEY_LEFT, MLX_KEY_A}, (int [2]){MLX_KEY_RIGHT, MLX_KEY_D}, &data->camera->position->x);
 }
 
+static void manage_mirroring(t_data *data)
+{
+	if (mlx_is_key_down(data->mlx, MLX_KEY_Q))
+		data->camera->mirroring->x = 1;
+	if (mlx_is_key_down(data->mlx, MLX_KEY_E))
+		data->camera->mirroring->y = 1;
+}
+
 static void manage_centralization(t_data *data)
 {
 	if (mlx_is_key_down(data->mlx, MLX_KEY_SPACE))
 	{
-		data->camera->position->x = (float) WIDTH / 2;
-		data->camera->position->y = (float) HEIGHT / 2;
-		data->camera->position->z = 10;
-		data->camera->rotation->x = 0;
-		data->camera->rotation->y = 0;
-		data->camera->rotation->z = 0;
+		*(data->camera->position) = (t_point) {(float) WIDTH / 2, (float) HEIGHT / 2, 10};
+		*(data->camera->rotation) = (t_point) {0, 0, 0};
+		*(data->camera->mirroring) = (t_point) {0, 0, 0};
 	}
 }
 
@@ -98,6 +103,7 @@ static void	set_render_placement(t_data *data)
 				mlx_is_key_down(data->mlx, MLX_KEY_MINUS), &data->camera->position->z);
 	manage_translation(data);
 	manage_rotation(data);
+	manage_mirroring(data);
 	manage_centralization(data);
 }
 
@@ -105,5 +111,13 @@ static void	manage_render(t_data *data)
 {
 	mlx_delete_image(data->mlx, data->image);
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	render_map(data, bresenham, isometric);
+	if (mlx_is_key_down(data->mlx, MLX_KEY_Z))
+		data->projection = isometric;
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_X))
+		data->projection = NULL;
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_C))
+		;
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_V))
+		;
+	render_map(data, bresenham, data->projection);
 }
