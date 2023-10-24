@@ -44,35 +44,56 @@
 #  define OPEN_FAILURE_MESSAGE "Failed to open file"
 # endif //OPEN_FAILURE_MESSAGE
 
-# ifndef EDGE_LENGTH
-#  define EDGE_LENGTH 50
-# endif //EDGE_LENGTH
+# ifndef TWO_DEGREE_IN_RADIAN
+#  define TWO_DEGREE_IN_RADIAN 0.034906585
+# endif //TWO_DEGREE_IN_RADIAN
+
+# ifndef SIN_0_8
+#  define SIN_0_8 0.71735609089952279
+# endif //SIN_0_8
+
+# ifndef COS_0_8
+#  define COS_0_8 0.69670670934716539
+# endif //COS_0_8
+
+# ifndef PI_X_2
+#  define PI_X_2 6.2831853071795862
+# endif //PI_X_2
 
 // TYPE DEFINITIONS
-typedef	struct s_map
-{
-	t_list	*list;
-	size_t	width;
-	size_t	height;
-}	t_map;
-
-typedef struct s_data
-{
-	t_map		*map;
-	mlx_t		*mlx;
-	mlx_image_t	*image;
-}	t_data;
-
-typedef  struct s_point
+typedef struct s_point
 {
 	double	x;
 	double	y;
 	double	z;
 }	t_point;
 
+typedef struct s_camera
+{
+	t_point	*position;
+	t_point	*rotation;
+	t_point *mirroring;
+}	t_camera;
+
+typedef struct s_map
+{
+	t_list	*list;
+	size_t	width;
+	size_t	height;
+}	t_map;
+
 typedef t_point (*t_proj_f)(t_point);
 
-typedef void (*t_draw_f)(mlx_image_t *, t_proj_f, t_point, t_point);
+typedef struct s_data
+{
+	t_camera	*camera;
+	t_map		*map;
+	t_proj_f	projection;
+	mlx_image_t	*image;
+	mlx_t		*mlx;
+}	t_data;
+
+typedef void (*t_draw_f)(t_data *, t_proj_f, t_point, t_point);
 
 // FUNCTION PROTOTYPES
 void	handle_error(const char *message);
@@ -82,6 +103,10 @@ void	render_map(t_data *data, t_draw_f d_f, t_proj_f p_f);
 int		ft_count_if(char **array, size_t (*f)(const char *));
 void	ft_foreach_str(char **array, size_t length, void (*f)(char *));
 t_point	isometric(t_point p);
-void	bresenham(mlx_image_t *image, t_proj_f f, t_point p1, t_point p2);
+void	bresenham(t_data *data, t_proj_f f, t_point p1, t_point p2);
+void	initialize_data(char *map_path, t_data **data);
+void	free_data(t_data *data);
+void	hook(t_data *data);
+void	scroll_hook(double scroll_x, double scroll_y, t_data *data);
 
 #endif //FDF_H

@@ -6,7 +6,7 @@
 /*   By: jovicto2 <jovicto2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:30:45 by jovicto2          #+#    #+#             */
-/*   Updated: 2023/10/15 14:30:53 by jovicto2         ###   ########.org.br   */
+/*   Updated: 2023/10/20 08:52:32 by jovicto2         ###   ########.org.br   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void	render_map(t_data *data, t_draw_f d_f, t_proj_f p_f)
 		while (column < (double)data->map->width)
 		{
 			if (column < (double)data->map->width - 1)
-				d_f(data->image, p_f, (t_point){column, line,((int *)
+				d_f(data, p_f, (t_point){column, line,((int *)
 				node->content)[(int)column]},(t_point){column + 1, line, (
 						(int *)node->content)[(int)column + 1]});
 			if (line < (double)data->map->height - 1)
-				d_f(data->image, p_f, (t_point){column, line,((int *)
+				d_f(data, p_f, (t_point){column, line,((int *)
 				node->content)[(int)column]},(t_point){column, line + 1, (
 						(int *)node->next->content)[(int)column]});
 			column++;
@@ -38,11 +38,13 @@ void	render_map(t_data *data, t_draw_f d_f, t_proj_f p_f)
 		line++;
 		node = node->next;
 	}
+	mlx_image_to_window(data->mlx, data->image, 0, 0);
 }
 
 t_point	true_isometric(t_point p)
 {
 	t_point	new_p;
+
 	new_p.x = (p.x - p.z) / sqrt(2);
 	new_p.y = (p.x + (2 * p.y) + p.z) / sqrt(6);
 	new_p.z = p.z;
@@ -52,39 +54,105 @@ t_point	true_isometric(t_point p)
 t_point	isometric(t_point p)
 {
 	t_point	new_p;
-	new_p.x = (p.x - p.y) * cos(0.5235988);
-	new_p.y = -p.z + (p.x + p.y) * sin(0.5235988);
+
+	new_p.x = (p.x - p.y) * COS_0_8;
+	new_p.y = (p.x + p.y) * SIN_0_8 - p.z;
 	new_p.z = p.z;
 	return (new_p);
 }
 
-void	bresenham(mlx_image_t *image, t_proj_f p_f, t_point p1, t_point p2)
+t_point rotate_x(t_point p, double angle)
 {
-	double			x_ratio;
-	double			y_ratio;
-	double			bigger_axis;
-	unsigned int	color;
+	t_point	new_p;
 
-	if(p1.z || p2.z)
+	new_p.x = p.x;
+	new_p.y = p.y * cos(angle) - p.z * sin(angle);
+	new_p.z = p.y * sin(angle) + p.z * cos(angle);
+	return (new_p);
+}
+
+t_point rotate_y(t_point p, double angle)
+{
+	t_point	new_p;
+
+	new_p.x = p.x * cos(angle) + p.z * sin(angle);
+	new_p.y = p.y;
+	new_p.z = -p.x * sin(angle) + p.z * cos(angle);
+	return (new_p);
+}
+
+t_point	rotate_z(t_point p, double angle)
+{
+	t_point	new_p;
+
+	new_p.x = p.x * cos(angle) - p.y * sin(angle);
+	new_p.y = p.x * sin(angle) + p.y * cos(angle);
+	new_p.z = p.z;
+	return (new_p);
+}
+
+void	bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
+{
+	double x_ratio;
+	double y_ratio;
+	double bigger_axis;
+	unsigned int color;
+
+	if (p1.z > 0 || p2.z > 0)
 		color = 0xFF0000FF;
+	else if (p1.z < 0 || p2.z < 0)
+		color = 0x0000FFFF;
 	else
 		color = 0xFFFFFFFF;
-	p1.x *= EDGE_LENGTH;
-	p1.y *= EDGE_LENGTH;
-	p2.x *= EDGE_LENGTH;
-	p2.y *= EDGE_LENGTH;
-	p1 = p_f(p1);
-	p2 = p_f(p2);
+	// CENTERING
+	p1.x -= (float) data->map->width / 2;
+	p1.y -= (float) data->map->height / 2;
+	p2.x -= (float) data->map->width / 2;
+	p2.y -= (float) data->map->height / 2;
+	// ZOOM
+	p1.x *= data->camera->position->z;
+	p1.y *= data->camera->position->z;
+	p2.x *= data->camera->position->z;
+	p2.y *= data->camera->position->z;
+	// ROTATION
+	p1 = rotate_x(p1, data->camera->rotation->x);
+	p2 = rotate_x(p2, data->camera->rotation->x);
+	p1 = rotate_y(p1, data->camera->rotation->y);
+	p2 = rotate_y(p2, data->camera->rotation->y);
+	p1 = rotate_z(p1, data->camera->rotation->z);
+	p2 = rotate_z(p2, data->camera->rotation->z);
+	// MIRRORING
+	if (data->camera->mirroring->x)
+	{
+		p1 = rotate_x(p1, M_PI);
+		p2 = rotate_x(p2, M_PI);
+	}
+	if (data->camera->mirroring->y)
+	{
+		p1 = rotate_y(p1, M_PI);
+		p2 = rotate_y(p2, M_PI);
+	}
+	// PROJECTION
+	if (p_f)
+	{
+		p1 = p_f(p1);
+		p2 = p_f(p2);
+	}
+	// TRANSLATION
+	p1.x += data->camera->position->x;
+	p2.x += data->camera->position->x;
+	p1.y += data->camera->position->y;
+	p2.y += data->camera->position->y;
 	x_ratio = p2.x - p1.x;
 	y_ratio = p2.y - p1.y;
 	bigger_axis = fmax(fabs(x_ratio), fabs(y_ratio));
 	x_ratio /= bigger_axis;
 	y_ratio /= bigger_axis;
-	p1.x += 500;
-	p2.x += 500;
+	//TODO: SEE RUSSIAN GUY'S VIDEO TO KNOW IF HIS IMPLEMENTATION STOP STUTTERING
 	while ((int)(p1.x - p2.x) || (int)(p1.y - p2.y))
 	{
-		mlx_put_pixel(image, (uint32_t)p1.x, (uint32_t)p1.y, color);
+		if ((int)p1.x < WIDTH && (int)p1.y < HEIGHT && (int)p1.x > 0 && (int)p1.y > 0)
+			mlx_put_pixel(data->image, (uint32_t)p1.x, (uint32_t)p1.y, color);
 		p1.x += x_ratio;
 		p1.y += y_ratio;
 	}
