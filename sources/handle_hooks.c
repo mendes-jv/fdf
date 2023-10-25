@@ -90,6 +90,8 @@ static void	manage_zoom(int zoom_in, int zoom_out, double *zoom)
 	zoom_speed = 1;
 	if (*zoom < 1)
 		zoom_speed = 0.1;
+	else if (*zoom >= 1 && *zoom < 5)
+		zoom_speed = 0.25;
 	if (zoom_in)
 		(*zoom) += zoom_speed;
 	else if (zoom_out)

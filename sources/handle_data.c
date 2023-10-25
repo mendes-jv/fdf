@@ -26,7 +26,7 @@ void initialize_data(char *map_path, t_data **data)
 	(*data)->projection = apply_isometric;
 	(*data)->camera->position->x =  ((float) WIDTH + (float) MENU_WIDTH) / 2;
 	(*data)->camera->position->y = (float) HEIGHT / 2;
-	(*data)->camera->position->z = 10;
+	(*data)->camera->position->z = 10; //TODO: change this value to work with map size.
 	(*data)->camera->rotation->x = 0;
 	(*data)->camera->rotation->y = 0;
 	(*data)->camera->rotation->z = 0;

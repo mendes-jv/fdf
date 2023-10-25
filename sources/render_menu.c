@@ -84,8 +84,8 @@ static void put_menu_text(mlx_t *mlx)
 	mlx_put_string(mlx, "Mirror by Y axis -> 'E' key", 85, 440);
 	mlx_put_string(mlx, "Centralize -> SPACE key", 100, 480);
 	mlx_put_string(mlx, "True isometric projection -> 'Z' key", 35, 520);
-	mlx_put_string(mlx, "Orthographic projection -> 'C' key", 45, 540);
-	mlx_put_string(mlx, "Zero rotation top view -> 'X' key", 50, 560);
+	mlx_put_string(mlx, "Top view orthographic -> 'X' key", 55, 580);
+	mlx_put_string(mlx, "Orthographic projection -> 'C' key", 45, 600);
 	mlx_put_string(mlx, "Isometric projection -> 'F' key", 60, 580);
 	mlx_put_string(mlx, "Torus projection -> 'V' key", 85, 600);
 	mlx_put_string(mlx, "Exit -> ESC key", 150, 640);
