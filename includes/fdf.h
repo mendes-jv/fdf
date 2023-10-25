@@ -64,6 +64,14 @@
 #  define PI_X_2 6.2831853071795862
 # endif //PI_X_2
 
+# ifndef SQRT_2
+#  define SQRT_2 1.4142135623730951
+# endif //SQRT_2
+
+# ifndef SQRT_6
+#  define SQRT_6 2.4494897427831779
+# endif //SQRT_6
+
 // TYPE DEFINITIONS
 typedef struct s_point
 {

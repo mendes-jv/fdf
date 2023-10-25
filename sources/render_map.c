@@ -45,8 +45,8 @@ t_point	apply_true_isometric(t_point p)
 {
 	t_point	new_p;
 
-	new_p.x = (p.x - p.z) / sqrt(2);
-	new_p.y = (p.x + (2 * p.y) + p.z) / sqrt(6);
+	new_p.x = (p.x - p.z) / SQRT_2;
+	new_p.y = (p.x + (2 * p.y) + p.z) / SQRT_6;
 	new_p.z = p.z;
 	return (new_p);
 }
