@@ -112,15 +112,16 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	// ZOOM
 	p1.x *= data->camera->position->z;
 	p1.y *= data->camera->position->z;
+	p1.z *= data->camera->position->z  / 10;
 	p2.x *= data->camera->position->z;
 	p2.y *= data->camera->position->z;
-	// ROTATION
-	p1 = rotate_x(p1, data->camera->rotation->x);
-	p2 = rotate_x(p2, data->camera->rotation->x);
-	p1 = rotate_y(p1, data->camera->rotation->y);
-	p2 = rotate_y(p2, data->camera->rotation->y);
-	p1 = rotate_z(p1, data->camera->rotation->z);
-	p2 = rotate_z(p2, data->camera->rotation->z);
+	p2.z *= data->camera->position->z  / 10;
+	// PROJECTION
+	if (p_f)
+	{
+		p1 = p_f(p1);
+		p2 = p_f(p2);
+	}
 	// MIRRORING
 	if (data->camera->mirroring->x)
 	{
@@ -132,12 +133,13 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 		p1 = rotate_y(p1, M_PI);
 		p2 = rotate_y(p2, M_PI);
 	}
-	// PROJECTION
-	if (p_f)
-	{
-		p1 = p_f(p1);
-		p2 = p_f(p2);
-	}
+	// ROTATION
+	p1 = rotate_x(p1, data->camera->rotation->x);
+	p2 = rotate_x(p2, data->camera->rotation->x);
+	p1 = rotate_y(p1, data->camera->rotation->y);
+	p2 = rotate_y(p2, data->camera->rotation->y);
+	p1 = rotate_z(p1, data->camera->rotation->z);
+	p2 = rotate_z(p2, data->camera->rotation->z);
 	// TRANSLATION
 	p1.x += data->camera->position->x;
 	p2.x += data->camera->position->x;
