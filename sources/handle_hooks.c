@@ -83,9 +83,9 @@ static void manage_centralization(t_data *data)
 		|| mlx_is_key_down(data->mlx, MLX_KEY_2) || mlx_is_key_down(data->mlx, MLX_KEY_3) ||
 			mlx_is_key_down(data->mlx, MLX_KEY_4))
 	{
-		*(data->camera->position) = (t_point) {((float) WIDTH + (float) MENU_WIDTH)/ 2, (float) HEIGHT / 2, (*data->camera->position).z};
-		*(data->camera->rotation) = (t_point) {0, 0, 0};
-		*(data->camera->mirroring) = (t_point) {0, 0, 0};
+		*(data->camera->position) = (t_point) {((float) WIDTH + (float) MENU_WIDTH)/ 2, (float) HEIGHT / 2, (*data->camera->position).z, 0};
+		*(data->camera->rotation) = (t_point) {0, 0, 0, 0};
+		*(data->camera->mirroring) = (t_point) {0, 0, 0, 0};
 	}
 }
 

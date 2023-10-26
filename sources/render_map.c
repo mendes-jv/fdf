@@ -26,13 +26,13 @@ void	render_map(t_data *data, t_draw_f d_f, t_proj_f p_f)
 		while (column < (double)data->map->width)
 		{
 			if (column < (double)data->map->width - 1)
-				d_f(data, p_f, (t_point){column, line,((int *)
-				node->content)[(int)column]},(t_point){column + 1, line, (
-						(int *)node->content)[(int)column + 1]});
+				d_f(data, p_f, (t_point){column, line,((t_values *)
+				node->content)[(int)column].altitude, 0},(t_point){column + 1, line, (
+						(t_values *)node->content)[(int)column + 1].altitude, 0});
 			if (line < (double)data->map->height - 1)
-				d_f(data, p_f, (t_point){column, line,((int *)
-				node->content)[(int)column]},(t_point){column, line + 1, (
-						(int *)node->next->content)[(int)column]});
+				d_f(data, p_f, (t_point){column, line,((t_values *)
+				node->content)[(int)column].altitude, 0},(t_point){column, line + 1, (
+						(t_values *)node->next->content)[(int)column].altitude, 0});
 			column++;
 		}
 		line++;

@@ -24,19 +24,66 @@ int	main(int argc, char **argv) {
 	return (EXIT_SUCCESS);
 }
 
-int	ft_count_if(char **array, size_t (*f)(const char*))
+size_t	ft_arr_len(char **array)
 {
-	int	count;
+	size_t	count;
 
 	count = 0;
-	while (*array)
-		if (f(*(array++)))
-			count++;
+	while (*(array++))
+		count++;
 	return (count);
 } //TODO: remove this function
 
-void	ft_foreach_str(char **array, size_t length, void (*f)(char *))
+void	ft_foreach_str(char **array, void (*f)(void *))
 {
-	while (length--)
+	while (*array)
 		f(*(array++));
 } //TODO: remove this function
+
+void	ft_foreach_array(char ***array, void (*f1)(void *), void (*f2)(void *))
+{
+	while (*array)
+	{
+		ft_foreach_str(*array, f2);
+		if (f1)
+			f1(*(array++));
+	}
+} //TODO: remove this function
+
+char	***ft_split_array(char **array, char delimiter)
+{
+	char	***split_array;
+	size_t	length;
+
+	length = ft_arr_len(array);
+	split_array = ft_calloc(length + 1, sizeof(char **));
+	split_array[length] = NULL;
+	while (length--)
+		split_array[length] = ft_split(array[length], delimiter);
+	return (split_array);
+} //TODO: remove this function
+
+int	ft_atorgb(const char *str)
+{
+	int result;
+
+	result = 0;
+	if(!str)
+		return (-1);
+	if (*str == '0' && *(str + 1) == 'x')
+		str += 2;
+	while (*str)
+	{
+		result = result * 16;
+		if (*str >= '0' && *str <= '9')
+			result += *str - '0';
+		else if (*str >= 'a' && *str <= 'f')
+			result += *str - 'a' + 10;
+		else if (*str >= 'A' && *str <= 'F')
+			result += *str - 'A' + 10;
+		else
+			return (-2);
+		str++;
+	}
+	return (result);
+} //TODO: Change this (*str) to don't use so many times

@@ -36,7 +36,7 @@ void initialize_data(char *map_path, t_data **data)
 	while (node)
 	{
 		for (size_t i = 0; i != (*data)->map->width; ++i)
-			ft_printf("%-3i", ((int *) node->content)[i]);
+			ft_printf("{%3i, %10p}, ", ((t_values *)node->content)[i].altitude, ((t_values *)node->content)[i].color);
 		node = node->next;
 		ft_printf("\n");
 	}

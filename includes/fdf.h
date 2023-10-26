@@ -18,6 +18,7 @@
 # include "../libraries/mlx42/include/MLX42/MLX42.h"
 # include <errno.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <math.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -73,11 +74,18 @@
 # endif //SQRT_6
 
 // TYPE DEFINITIONS
+typedef struct s_values
+{
+	int	altitude;
+	int	color;
+}	t_values;
+
 typedef struct s_point
 {
 	double	x;
 	double	y;
 	double	z;
+	int		color;
 }	t_point;
 
 typedef struct s_camera
@@ -121,7 +129,10 @@ void	render_menu(t_data *data);
 void	render_menu_background(mlx_image_t *mlx);
 void	initialize_data(char *map_path, t_data **data);
 void	free_data(t_data *data);
-int		ft_count_if(char **array, size_t (*f)(const char *));
-void	ft_foreach_str(char **array, size_t length, void (*f)(char *));
+size_t	ft_arr_len(char **array);
+void	ft_foreach_str(char **array, void (*f)(void *));
+void	ft_foreach_array(char ***array, void (*f1)(void *), void (*f2)(void *));
+char	***ft_split_array(char **array, char delimiter);
+int		ft_atorgb(const char *str);
 
 #endif //FDF_H
