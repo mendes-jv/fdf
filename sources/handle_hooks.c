@@ -37,9 +37,9 @@ void	handle_scroll_hook(double scroll_x, double scroll_y, t_data *data)
 static void manage_axis_rotation(mlx_t *mlx, int *keys, double *axis)
 {
 	if(mlx_is_key_down(mlx, keys[0]))
-		*axis += FOUR_DEGREE_IN_RADIAN;
+		*axis += ROTATION_SPEED;
 	else if(mlx_is_key_down(mlx, keys[1]))
-		*axis -= FOUR_DEGREE_IN_RADIAN;
+		*axis -= ROTATION_SPEED;
 	if (fabs(*axis) > PI_X_2)
 		*axis -= *axis / fabs(*axis) * PI_X_2;
 }
@@ -105,7 +105,7 @@ static void	manage_zoom(int zoom_in, int zoom_out, double *zoom)
 
 static void manage_color_mode(t_data *data)
 {
-	if (mlx_is_key_down(data->mlx, MLX_KEY_Z))
+	if (mlx_is_key_down(data->mlx, MLX_KEY_Z)) //TODO: Check initialize when map is full white
 		data->camera->color_mode = DEFAULT_COLOR_MODE;
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_X))
 		data->camera->color_mode = HENDRIX_COLOR_MODE;
