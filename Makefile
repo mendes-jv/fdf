@@ -28,7 +28,7 @@ MAKE			:= make
 CMAKE			:= cmake
 MAKE_LIBS		:= $(MAKE) -C
 CC				:= cc
-CFLAGS			:= -Wall -Wextra -Werror -Wunreachable-code -g3 -Ofast
+CFLAGS			:= -Wall -Wextra -Werror -Wunreachable-code -Ofast -O3 -g3
 FSANITIZE		:= -fsanitize=address
 MKDIR			:= mkdir -p
 RM				:= rm -rf
