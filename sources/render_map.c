@@ -26,13 +26,16 @@ void	render_map(t_data *data, t_draw_f d_f, t_proj_f p_f)
 		while (column < (double)data->map->width)
 		{
 			if (column < (double)data->map->width - 1)
-				d_f(data, p_f, (t_point){column, line,((t_values *)
-				node->content)[(int)column].altitude, 0},(t_point){column + 1, line, (
-						(t_values *)node->content)[(int)column + 1].altitude, 0});
+				d_f(data, p_f, (t_point){column, line,
+										 ((t_values *)node->content)[(int)column].altitude,
+										 (((t_values *) node->content)[(int) column].color)},
+					(t_point){column + 1, line, (
+						(t_values *)node->content)[(int)column + 1].altitude, ((t_values *)node->content)[(int)column + 1].color});
 			if (line < (double)data->map->height - 1)
-				d_f(data, p_f, (t_point){column, line,((t_values *)
-				node->content)[(int)column].altitude, 0},(t_point){column, line + 1, (
-						(t_values *)node->next->content)[(int)column].altitude, 0});
+				d_f(data, p_f, (t_point){column, line,
+										 ((t_values *)node->content)[(int)column].altitude, ((t_values *)node->content)[(int)column].color},
+					(t_point){column, line + 1, (
+						(t_values *)node->next->content)[(int)column].altitude, ((t_values *)node->next->content)[(int)column].color});
 			column++;
 		}
 		line++;
@@ -93,17 +96,32 @@ t_point	rotate_z(t_point p, double angle)
 
 void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 {
-	double x_ratio;
-	double y_ratio;
-	double bigger_axis;
-	unsigned int color;
+	double	x_ratio;
+	double	y_ratio;
+	double	bigger_axis;
+	size_t 	color;
 
-	if (p1.z > 0 || p2.z > 0)
-		color = 0xFF0000FF;
-	else if (p1.z < 0 || p2.z < 0)
-		color = 0x0000FFFF;
-	else
-		color = 0xFFFFFFFF;
+	color = ((size_t)ft_ternary(fmax(fabs(p1.z), fabs(p2.z)) == p1.z, p1.color, p2.color) << 8) + 0xFF ;
+//	if (data->camera->color_mode & DEFAULT_COLOR_MODE)
+//	{
+//		p1.color = 0x;
+//		p2.color = 0xFFFFFFFF;
+//	}
+//	else if (data->camera->color_mode & HENDRIX_COLOR_MODE)
+//	{
+//		p1.color = 0x00FF0000;
+//		p2.color = 0x00FF0000;
+//	}
+//	else if (data->camera->color_mode & POLARITY_COLOR_SCHEME)
+//	{
+//		p1.color = 0x0000FF00;
+//		p2.color = 0x0000FF00;
+//	}
+//	else if (data->camera->color_mode & EARTH_COLOR_SCHEME)
+//	{
+//		p1.color = 0x000000FF;
+//		p2.color = 0x000000FF;
+//	}
 	// CENTERING
 	p1.x -= (float) data->map->width / 2;
 	p1.y -= (float) data->map->height / 2;
@@ -147,7 +165,7 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	p2.y += data->camera->position->y;
 	x_ratio = p2.x - p1.x;
 	y_ratio = p2.y - p1.y;
-	bigger_axis = fmax(fabs(x_ratio), fabs(y_ratio));
+	bigger_axis = fmax(fabs(x_ratio), fabs(y_ratio)); //TODO: See math calls
 	x_ratio /= bigger_axis;
 	y_ratio /= bigger_axis;
 	while ((int)(p1.x - p2.x) || (int)(p1.y - p2.y))

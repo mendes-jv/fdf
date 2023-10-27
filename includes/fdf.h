@@ -18,9 +18,7 @@
 # include "../libraries/mlx42/include/MLX42/MLX42.h"
 # include <errno.h>
 # include <fcntl.h>
-# include <limits.h>
 # include <math.h>
-# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 
@@ -49,9 +47,9 @@
 #  define OPEN_FAILURE_MESSAGE "Failed to open file"
 # endif //OPEN_FAILURE_MESSAGE
 
-# ifndef TWO_DEGREE_IN_RADIAN
-#  define TWO_DEGREE_IN_RADIAN 0.034906585
-# endif //TWO_DEGREE_IN_RADIAN
+# ifndef FOUR_DEGREE_IN_RADIAN
+#  define FOUR_DEGREE_IN_RADIAN 0.069813170079773182
+# endif //FOUR_DEGREE_IN_RADIAN
 
 # ifndef SIN_0_8
 #  define SIN_0_8 0.71735609089952279
@@ -73,6 +71,22 @@
 #  define SQRT_6 2.4494897427831779
 # endif //SQRT_6
 
+# ifndef DEFAULT_COLOR_MODE
+# define DEFAULT_COLOR_MODE 0b0
+# endif //DEFAULT_COLOR_MODE
+
+# ifndef HENDRIX_COLOR_MODE
+# define HENDRIX_COLOR_MODE 0b1
+# endif //HENDRIX_COLOR_MODE
+
+# ifndef POLARITY_COLOR_SCHEME
+# define POLARITY_COLOR_SCHEME 0b10
+# endif //POLARITY_COLOR_SCHEME
+
+# ifndef EARTH_COLOR_SCHEME
+# define EARTH_COLOR_SCHEME 0b11
+# endif //EARTH_COLOR_SCHEME
+
 // TYPE DEFINITIONS
 typedef struct s_values
 {
@@ -93,6 +107,7 @@ typedef struct s_camera
 	t_point	*position;
 	t_point	*rotation;
 	t_point *mirroring;
+	char	color_mode;
 }	t_camera;
 
 typedef struct s_map
@@ -130,9 +145,10 @@ void	render_menu_background(mlx_image_t *mlx);
 void	initialize_data(char *map_path, t_data **data);
 void	free_data(t_data *data);
 size_t	ft_arr_len(char **array);
-void	ft_foreach_str(char **array, void (*f)(void *));
-void	ft_foreach_array(char ***array, void (*f1)(void *), void (*f2)(void *));
+void	ft_for_each(void **array, void (*f)(void *));
+void	ft_array_for_each(void **array, void (*f1)(void *), void (*f2)(void *));
 char	***ft_split_array(char **array, char delimiter);
 int		ft_atorgb(const char *str);
+int		ft_ternary(int condition, int a, int b);
 
 #endif //FDF_H

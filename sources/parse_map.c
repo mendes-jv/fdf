@@ -79,7 +79,7 @@ static void	split_line(t_list **list)
 static void split_values(t_list **list)
 {
 	t_list	*node;
-	char	**old_content;
+	void	**old_content;
 
 	node = *list;
 	ft_printf("\nSplitted values:\n");
@@ -87,7 +87,7 @@ static void split_values(t_list **list)
 	{
 		old_content = node->content;
 		node->content = ft_split_array(node->content, ',');
-		ft_foreach_str(old_content, free);
+		ft_for_each(old_content, free);
 		free(old_content);
 		for (int i = 0; ((char ***)node->content)[i]; i++)
 			ft_printf("{%3s, %-7s}, ", ((char ***)node->content)[i][0], ((char ***)node->content)[i][1]);
@@ -109,11 +109,11 @@ static void	parse_line(t_list **list)
 	while (node)
 	{
 		length = ft_arr_len(((char **)node->content));
-		new_node = ft_calloc(length + 1, sizeof(t_values));//TODO: check this "+1" to change macro for all clear allocations
+		new_node = ft_calloc(length + 1, sizeof(t_values)); //TODO: check this "+1" to change macro for all clear allocations
 		while (length--)
 			new_node[length] = (t_values){ft_atoi(((char ***)node->content)[length][0]),
-										  ft_atorgb(((char ***)node->content)[length][1])}; //TODO: set macro for this jump
-		ft_foreach_array(node->content, free, free);
+										  ft_atorgb(((char ***)node->content)[length][1])};
+		ft_array_for_each(node->content, free, free);
 		free(node->content);
 		node->content = new_node;
 		for (size_t i = 0; i != width; ++i)

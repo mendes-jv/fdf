@@ -14,7 +14,7 @@
 
 static void	manage_render(t_data *data);
 static void	manage_zoom(int zoom_in, int zoom_out, double *zoom);
-static void	set_render_placement(t_data *data);
+static void	set_render_attributes(t_data *data);
 
 void	handle_key_hooks(t_data *data)
 {
@@ -23,7 +23,7 @@ void	handle_key_hooks(t_data *data)
 		mlx_close_window(data->mlx);
 		exit(EXIT_SUCCESS);
 	}
-	set_render_placement(data);
+	set_render_attributes(data);
 	manage_render(data);
 }
 
@@ -37,9 +37,9 @@ void	handle_scroll_hook(double scroll_x, double scroll_y, t_data *data)
 static void manage_axis_rotation(mlx_t *mlx, int *keys, double *axis)
 {
 	if(mlx_is_key_down(mlx, keys[0]))
-		*axis += TWO_DEGREE_IN_RADIAN;
+		*axis += FOUR_DEGREE_IN_RADIAN;
 	else if(mlx_is_key_down(mlx, keys[1]))
-		*axis -= TWO_DEGREE_IN_RADIAN;
+		*axis -= FOUR_DEGREE_IN_RADIAN;
 	if (fabs(*axis) > PI_X_2)
 		*axis -= *axis / fabs(*axis) * PI_X_2;
 }
@@ -47,9 +47,9 @@ static void manage_axis_rotation(mlx_t *mlx, int *keys, double *axis)
 static void	manage_axis_translation(t_data *data, int *key_up, int *key_down, double *axis)
 {
 	if (mlx_is_key_down(data->mlx, key_down[0]) || mlx_is_key_down(data->mlx, key_down[1]))
-		*axis -= data->camera->position->z;
+		*axis -= sqrt(data->camera->position->z * 10);
 	else if (mlx_is_key_down(data->mlx, key_up[0]) || mlx_is_key_down(data->mlx, key_up[1]))
-		*axis += data->camera->position->z;
+		*axis += sqrt(data->camera->position->z * 10);
 }
 
 static void	manage_rotation(t_data *data)
@@ -79,11 +79,16 @@ static void manage_mirroring(t_data *data)
 
 static void manage_centralization(t_data *data)
 {
+	double	zoom;
+
+	zoom = 10;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_SPACE) || mlx_is_key_down(data->mlx, MLX_KEY_1)
 		|| mlx_is_key_down(data->mlx, MLX_KEY_2) || mlx_is_key_down(data->mlx, MLX_KEY_3) ||
 			mlx_is_key_down(data->mlx, MLX_KEY_4))
 	{
-		*(data->camera->position) = (t_point) {((float) WIDTH + (float) MENU_WIDTH)/ 2, (float) HEIGHT / 2, (*data->camera->position).z, 0};
+		if (mlx_is_key_down(data->mlx, MLX_KEY_SPACE))
+			zoom = data->camera->position->z;
+		*(data->camera->position) = (t_point) {((float) WIDTH + (float) MENU_WIDTH)/ 2, (float) HEIGHT / 2, zoom, 0};
 		*(data->camera->rotation) = (t_point) {0, 0, 0, 0};
 		*(data->camera->mirroring) = (t_point) {0, 0, 0, 0};
 	}
@@ -92,14 +97,27 @@ static void manage_centralization(t_data *data)
 static void	manage_zoom(int zoom_in, int zoom_out, double *zoom)
 {
 	if (zoom_in)
-		(*zoom) += *zoom / 10;
+		(*zoom) += *zoom / 20;
 	else if (zoom_out)
-		(*zoom) -= *zoom / 10;
+		(*zoom) -= *zoom / 20;
 	*zoom = fmax(0, *zoom);
 }
 
-static void	set_render_placement(t_data *data)
+static void manage_color_mode(t_data *data)
 {
+	if (mlx_is_key_down(data->mlx, MLX_KEY_Z))
+		data->camera->color_mode = DEFAULT_COLOR_MODE;
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_X))
+		data->camera->color_mode = HENDRIX_COLOR_MODE;
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_C))
+		data->camera->color_mode = POLARITY_COLOR_SCHEME;
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_V))
+		data->camera->color_mode = EARTH_COLOR_SCHEME;
+}
+
+static void	set_render_attributes(t_data *data)
+{
+	manage_color_mode(data);
 	manage_zoom(mlx_is_key_down(data->mlx, MLX_KEY_EQUAL),
 				mlx_is_key_down(data->mlx, MLX_KEY_MINUS), &data->camera->position->z);
 	manage_translation(data);

@@ -34,19 +34,18 @@ size_t	ft_arr_len(char **array)
 	return (count);
 } //TODO: remove this function
 
-void	ft_foreach_str(char **array, void (*f)(void *))
+void	ft_for_each(void **array, void (*f)(void *))
 {
 	while (*array)
 		f(*(array++));
 } //TODO: remove this function
 
-void	ft_foreach_array(char ***array, void (*f1)(void *), void (*f2)(void *))
+void	ft_array_for_each(void **array, void (*array_f)(void *), void (*index_f)(void *))
 {
 	while (*array)
 	{
-		ft_foreach_str(*array, f2);
-		if (f1)
-			f1(*(array++));
+		ft_for_each(*array, index_f);
+		array_f(*(array++));
 	}
 } //TODO: remove this function
 
@@ -69,7 +68,7 @@ int	ft_atorgb(const char *str)
 
 	result = 0;
 	if(!str)
-		return (-1);
+		return (0xFFFFFF);
 	if (*str == '0' && *(str + 1) == 'x')
 		str += 2;
 	while (*str)
@@ -82,8 +81,15 @@ int	ft_atorgb(const char *str)
 		else if (*str >= 'A' && *str <= 'F')
 			result += *str - 'A' + 10;
 		else
-			return (-2);
+			return (0x0);
 		str++;
 	}
 	return (result);
 } //TODO: Change this (*str) to don't use so many times
+
+int ft_ternary(int condition, int a, int b)
+{
+	if (condition)
+		return (a);
+	return (b);
+} //TODO: remove this function
