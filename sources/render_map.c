@@ -101,40 +101,37 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	double	bigger_axis;
 	size_t 	color;
 
-	color = ((size_t)ft_ternary(fmax(fabs(p1.z), fabs(p2.z)) == p1.z, p1.color, p2.color) << 8) + 0xFF ;
-//	if (data->camera->color_mode & DEFAULT_COLOR_MODE)
-//	{
-//		p1.color = 0x;
-//		p2.color = 0xFFFFFFFF;
-//	}
-//	else if (data->camera->color_mode & HENDRIX_COLOR_MODE)
+	// COLORING PIXELS
+//	if (data->camera->color_mode == DEFAULT_COLOR_MODE)
+//		color = ((size_t)ft_ternary(fmax(fabs(p1.z), fabs(p2.z)) == p1.z, p1.color, p2.color) << 8) + 0xFF;
+//	else if (data->camera->color_mode == HENDRIX_COLOR_MODE)
 //	{
 //		p1.color = 0x00FF0000;
 //		p2.color = 0x00FF0000;
 //	}
-//	else if (data->camera->color_mode & POLARITY_COLOR_SCHEME)
+//	else if (data->camera->color_mode == POLARITY_COLOR_SCHEME)
 //	{
 //		p1.color = 0x0000FF00;
 //		p2.color = 0x0000FF00;
 //	}
-//	else if (data->camera->color_mode & EARTH_COLOR_SCHEME)
+//	else if (data->camera->color_mode == EARTH_COLOR_SCHEME)
 //	{
 //		p1.color = 0x000000FF;
 //		p2.color = 0x000000FF;
 //	}
 	// CENTERING
-	p1.x -= (float) data->map->width / 2;
-	p1.y -= (float) data->map->height / 2;
-	p2.x -= (float) data->map->width / 2;
-	p2.y -= (float) data->map->height / 2;
-	// ZOOM
+	p1.x -= (float) (data->map->width - 1) / 2;
+	p1.y -= (float) (data->map->height - 1) / 2;
+	p2.x -= (float) (data->map->width - 1) / 2;
+	p2.y -= (float) (data->map->height - 1) / 2;
+	// ZOOMING
 	p1.x *= data->camera->position->z;
 	p1.y *= data->camera->position->z;
-	p1.z *= data->camera->position->z  / 10;
+	p1.z *= data->camera->position->z;
 	p2.x *= data->camera->position->z;
 	p2.y *= data->camera->position->z;
-	p2.z *= data->camera->position->z  / 10;
-	// PROJECTION
+	p2.z *= data->camera->position->z;
+	// PROJECTING
 	if (p_f)
 	{
 		p1 = p_f(p1);
@@ -151,14 +148,14 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 		p1 = rotate_y(p1, M_PI);
 		p2 = rotate_y(p2, M_PI);
 	}
-	// ROTATION
+	// ROTATING
 	p1 = rotate_x(p1, data->camera->rotation->x);
 	p2 = rotate_x(p2, data->camera->rotation->x);
 	p1 = rotate_y(p1, data->camera->rotation->y);
 	p2 = rotate_y(p2, data->camera->rotation->y);
 	p1 = rotate_z(p1, data->camera->rotation->z);
 	p2 = rotate_z(p2, data->camera->rotation->z);
-	// TRANSLATION
+	// TRANSLATING
 	p1.x += data->camera->position->x;
 	p2.x += data->camera->position->x;
 	p1.y += data->camera->position->y;
