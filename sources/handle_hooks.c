@@ -81,10 +81,9 @@ static void manage_centralization(t_data *data)
 {
 	double	zoom;
 
-	zoom = 10;
+	zoom = (double) ft_ternary((WIDTH > HEIGHT), WIDTH / data->map->width, HEIGHT / data->map->height) / 3;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_SPACE) || mlx_is_key_down(data->mlx, MLX_KEY_1)
-		|| mlx_is_key_down(data->mlx, MLX_KEY_2) || mlx_is_key_down(data->mlx, MLX_KEY_3) ||
-			mlx_is_key_down(data->mlx, MLX_KEY_4))
+		|| mlx_is_key_down(data->mlx, MLX_KEY_2) || mlx_is_key_down(data->mlx, MLX_KEY_3))
 	{
 		if (mlx_is_key_down(data->mlx, MLX_KEY_SPACE))
 			zoom = data->camera->position->z;
