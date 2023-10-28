@@ -83,10 +83,13 @@ static void put_menu_text(mlx_t *mlx)
 	mlx_put_string(mlx, "Mirror by X axis -> 'R' and 'T' key", 40, 420);
 	mlx_put_string(mlx, "Mirror by Y axis -> 'F' and 'G' key", 40, 440);
 	mlx_put_string(mlx, "Centralize -> SPACE key", 100, 480);
-	mlx_put_string(mlx, "Isometric projection -> '1' key", 60, 520);
+	mlx_put_string(mlx, "42 Isometric projection -> '1' key", 60, 520);
 	mlx_put_string(mlx, "True isometric projection -> '2' key", 35, 540);
-	mlx_put_string(mlx, "Top view orthographic -> '3' key", 55, 560);
-	mlx_put_string(mlx, "Orthographic projection -> '4' key", 45, 580);
+	mlx_put_string(mlx, "Orthographic projection -> '3' key", 55, 560);
+	mlx_put_string(mlx, "Stereographic projection -> '4' key", 45, 580);
 	mlx_put_string(mlx, "Torus projection -> '5' key", 85, 600);
-	mlx_put_string(mlx, "Exit -> ESC key", 150, 640);
+	mlx_put_string(mlx, "Map color scheme-> 'Z' key", 90, 640);
+	mlx_put_string(mlx, "Hendrix color scheme-> 'X' key", 65, 660);
+	mlx_put_string(mlx, "Polarity color scheme-> 'C' key", 60, 680);
+	mlx_put_string(mlx, "Exit -> ESC key", 150, 720);
 }

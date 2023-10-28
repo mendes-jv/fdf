@@ -111,10 +111,10 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 											   ft_ternary(color > 5 && color <= 15, 0x9614D0FF,
 														  ft_ternary(color > 15 && color <= 25, 0x660094FF,
 																	 ft_ternary(color > 25, 0x310047FF,
-																				ft_ternary(color < 0 && color >= -3, 0xFFA505FF,
-																						   ft_ternary(color < -3 && color >= -5, 0xFFB805FF,
+																				ft_ternary(color < 0 && color >= -3, 0xFFFB05FF,
+																						   ft_ternary(color < -3 && color >= -5, 0xFFE505FF,
 																									  ft_ternary(color < -5 && color >= -15, 0xFFC905FF,
-																												 ft_ternary(color < -15 && color >= -25, 0xFFE505FF, 0xFFFB05FF))))))))), 0xFFFFFFFF);
+																												 ft_ternary(color < -15 && color >= -25, 0xFFB805FF, 0xFFA505FF))))))))), 0xE8B382FF);
 	else if (data->camera->color_mode == POLARITY_COLOR_SCHEME)
 		color = ft_ternary(color, ft_ternary(color > 0, 0xB82230FF, 0x1C24D0FF), 0xFFFFFFFF);
 	// CENTERING
