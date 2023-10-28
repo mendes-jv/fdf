@@ -22,6 +22,8 @@ t_map	*parse_map(char *map_str)
 	int		map_fd;
 	t_map	*map;
 
+	if (!ft_strnstr(map_str, ".fdf", ft_strlen(map_str)))
+		handle_error(INVALID_ARGUMENT_MESSAGE);
 	map_fd = open(map_str, O_RDONLY);
 	if (map_fd == -1)
 		handle_error(OPEN_FAILURE_MESSAGE);
@@ -40,8 +42,11 @@ static void read_map(t_list **list, int map_fd)
 	t_list 	*node;
 	char	*temp_line;
 
-	ft_printf ("\nGNL result:\n");
+
 	temp_line = ft_get_next_line(map_fd);
+	if (!temp_line)
+		handle_error(INVALID_ARGUMENT_MESSAGE);
+	ft_printf ("\nGNL result:\n");
 	while (temp_line) {
 		ft_printf ("%s", temp_line);
 		ft_lstadd_back(list,ft_lstnew(ft_substr(temp_line, 0, ft_strlen(temp_line) - 1)));

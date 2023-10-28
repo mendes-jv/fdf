@@ -31,7 +31,7 @@ void	render_map(t_data *data, t_draw_f d_f, t_proj_f p_f)
 										 (((t_values *) node->content)[(int) column].color)},
 					(t_point){column + 1, line, (
 						(t_values *)node->content)[(int)column + 1].altitude, ((t_values *)node->content)[(int)column + 1].color});
-			if (line < (double)data->map->height - 1)
+			if (line < (double)data->map->height - 1) //TODO: apply ft_ternary to get to get triangled lines in bad maps
 				d_f(data, p_f, (t_point){column, line,
 										 ((t_values *)node->content)[(int)column].altitude, ((t_values *)node->content)[(int)column].color},
 					(t_point){column, line + 1, (
@@ -101,6 +101,8 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	double	bigger_axis;
 	long 	color;
 
+	if (!p1.color || !p2.color)
+		return ;
 	// COLORING PIXELS
 	color = (long) ft_ternary(fabs(p1.z) > fabs(p2.z), (long) p1.z, (long) p2.z);
 	if (data->camera->color_mode == DEFAULT_COLOR_MODE)

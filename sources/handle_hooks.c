@@ -111,8 +111,6 @@ static void manage_color_mode(t_data *data)
 		data->camera->color_mode = HENDRIX_COLOR_MODE;
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_C))
 		data->camera->color_mode = POLARITY_COLOR_SCHEME;
-	else if (mlx_is_key_down(data->mlx, MLX_KEY_V))
-		data->camera->color_mode = EARTH_COLOR_SCHEME;
 }
 
 static void	set_render_attributes(t_data *data)

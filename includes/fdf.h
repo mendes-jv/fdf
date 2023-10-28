@@ -40,12 +40,16 @@
 # endif //PROGRAM_NAME
 
 # ifndef ARGUMENTS_ERROR_MESSAGE
-#  define ARGUMENTS_ERROR_MESSAGE "Invalid arguments\nUsage: ./fdf <map.fdf>\n"
+#  define ARGUMENTS_ERROR_MESSAGE "\nInvalid arguments: use \"./fdf <map.fdf>\" to run properly\n"
 # endif //ARGUMENTS_ERROR_MESSAGE
 
 # ifndef OPEN_FAILURE_MESSAGE
-#  define OPEN_FAILURE_MESSAGE "Failed to open file"
+#  define OPEN_FAILURE_MESSAGE "\nFailed to open file"
 # endif //OPEN_FAILURE_MESSAGE
+
+#ifndef INVALID_ARGUMENT_MESSAGE
+# define INVALID_ARGUMENT_MESSAGE "\nInvalid map: Please provide a valid map with \"<map_name>.fdf\" extension\n"
+# endif //INVALID_ARGUMENT_MESSAGE
 
 # ifndef ROTATION_SPEED
 #  define ROTATION_SPEED 0.06
@@ -82,10 +86,6 @@
 # ifndef POLARITY_COLOR_SCHEME
 # define POLARITY_COLOR_SCHEME 0b10
 # endif //POLARITY_COLOR_SCHEME
-
-# ifndef EARTH_COLOR_SCHEME
-# define EARTH_COLOR_SCHEME 0b11
-# endif //EARTH_COLOR_SCHEME
 
 // TYPE DEFINITIONS
 typedef struct s_values
