@@ -109,6 +109,7 @@ typedef struct s_camera
 	t_point	*position;
 	t_point	*rotation;
 	t_point *mirroring;
+	char	upscaling;
 	char	color_mode;
 }	t_camera;
 

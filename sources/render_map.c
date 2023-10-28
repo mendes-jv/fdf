@@ -127,10 +127,15 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	// ZOOMING
 	p1.x *= data->camera->position->z;
 	p1.y *= data->camera->position->z;
-	p1.z *= data->camera->position->z;
+	p1.z *= data->camera->position->z / 5;
 	p2.x *= data->camera->position->z;
 	p2.y *= data->camera->position->z;
-	p2.z *= data->camera->position->z;
+	p2.z *= data->camera->position->z / 5;
+	// UPSCALING
+	if (p1.z)
+		p1.z += data->camera->upscaling;
+	if (p2.z)
+		p2.z += data->camera->upscaling;
 	// MIRRORING
 	if (data->camera->mirroring->x)
 	{

@@ -113,6 +113,14 @@ static void manage_color_mode(t_data *data)
 		data->camera->color_mode = POLARITY_COLOR_SCHEME;
 }
 
+static void	manage_upscaling(t_data *data)
+{
+	if (mlx_is_key_down(data->mlx, MLX_KEY_Q) && data->camera->upscaling < 100)
+		data->camera->upscaling++;
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_E) && data->camera->upscaling > -100)
+		data->camera->upscaling--;
+}
+
 static void	set_render_attributes(t_data *data)
 {
 	manage_color_mode(data);
@@ -121,6 +129,7 @@ static void	set_render_attributes(t_data *data)
 	manage_translation(data);
 	manage_rotation(data);
 	manage_mirroring(data);
+	manage_upscaling(data);
 	manage_centralization(data);
 }
 
