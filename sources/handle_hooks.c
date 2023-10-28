@@ -134,8 +134,6 @@ static void	manage_render(t_data *data)
 		data->projection = apply_true_isometric;
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_3))
 		data->projection = NULL;
-	else if (mlx_is_key_down(data->mlx, MLX_KEY_4))
-		;
 	render_map(data, apply_bresenham, data->projection);
 	render_menu_background(data->image);
 }
