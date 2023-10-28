@@ -26,17 +26,18 @@ void initialize_data(char *map_path, t_data **data)
 	(*data)->projection = apply_isometric;
 	(*data)->camera->position->x =  ((float) WIDTH + (float) MENU_WIDTH) / 2;
 	(*data)->camera->position->y = (float) HEIGHT / 2;
-	(*data)->camera->position->z = 10;
+	(*data)->camera->position->z = 10; //TODO: change this value to work with map size.
 	(*data)->camera->rotation->x = 0;
 	(*data)->camera->rotation->y = 0;
 	(*data)->camera->rotation->z = 0;
 	(*data)->camera->mirroring->x = 0;
 	(*data)->camera->mirroring->y = 0;
+	(*data)->camera->color_mode = DEFAULT_COLOR_MODE;
 	ft_printf("\nParsed map content:\n");
 	while (node)
 	{
 		for (size_t i = 0; i != (*data)->map->width; ++i)
-			ft_printf("%-3i", ((int *) node->content)[i]);
+			ft_printf("{%3i, %10p}, ", ((t_values *)node->content)[i].altitude, ((t_values *)node->content)[i].color);
 		node = node->next;
 		ft_printf("\n");
 	}
