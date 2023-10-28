@@ -44,26 +44,6 @@ void	render_map(t_data *data, t_draw_f d_f, t_proj_f p_f)
 	mlx_image_to_window(data->mlx, data->image, 0, 0);
 }
 
-t_point	apply_true_isometric(t_point p)
-{
-	t_point	new_p;
-
-	new_p.x = (p.x - p.z) / SQRT_2;
-	new_p.y = (p.x + (2 * p.y) + p.z) / SQRT_6;
-	new_p.z = p.z;
-	return (new_p);
-}
-
-t_point	apply_isometric(t_point p)
-{
-	t_point	new_p;
-
-	new_p.x = (p.x - p.y) * COS_0_8;
-	new_p.y = (p.x + p.y) * SIN_0_8 - p.z;
-	new_p.z = p.z;
-	return (new_p);
-}
-
 t_point rotate_x(t_point p, double angle)
 {
 	t_point	new_p;
@@ -94,31 +74,49 @@ t_point	rotate_z(t_point p, double angle)
 	return (new_p);
 }
 
+t_point	apply_true_isometric(t_point p)
+{
+	t_point	new_p;
+
+	new_p.x = (p.x - p.z) / SQRT_2;
+	new_p.y = (p.x + (2 * p.y) + p.z) / SQRT_6;
+	new_p.z = p.z;
+	return (new_p);
+}
+
+t_point	apply_isometric(t_point p)
+{
+	t_point	new_p;
+
+	new_p.x = (p.x - p.y) * COS_0_8;
+	new_p.y = (p.x + p.y) * SIN_0_8 - p.z;
+	new_p.z = p.z;
+	return (new_p);
+}
+
 void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 {
 	double	x_ratio;
 	double	y_ratio;
 	double	bigger_axis;
-	size_t 	color;
+	long 	color;
 
 	// COLORING PIXELS
-//	if (data->camera->color_mode == DEFAULT_COLOR_MODE)
-//		color = ((size_t)ft_ternary(fmax(fabs(p1.z), fabs(p2.z)) == p1.z, p1.color, p2.color) << 8) + 0xFF;
-//	else if (data->camera->color_mode == HENDRIX_COLOR_MODE)
-//	{
-//		p1.color = 0x00FF0000;
-//		p2.color = 0x00FF0000;
-//	}
-//	else if (data->camera->color_mode == POLARITY_COLOR_SCHEME)
-//	{
-//		p1.color = 0x0000FF00;
-//		p2.color = 0x0000FF00;
-//	}
-//	else if (data->camera->color_mode == EARTH_COLOR_SCHEME)
-//	{
-//		p1.color = 0x000000FF;
-//		p2.color = 0x000000FF;
-//	}
+	color = (long) ft_ternary(fabs(p1.z) > fabs(p2.z), (long) p1.z, (long) p2.z);
+	if (data->camera->color_mode == DEFAULT_COLOR_MODE)
+		color = ft_ternary(color == (long)p1.z, p1.color, p2.color) * 0x100 + 0xFF;
+	else if (data->camera->color_mode == HENDRIX_COLOR_MODE)
+		color = ft_ternary(color, ft_ternary(color > 0 && color <= 3, 0xD16AFFFF,
+											 ft_ternary(color > 3 && color <= 5, 0xBB44F0FF,
+											   ft_ternary(color > 5 && color <= 15, 0x9614D0FF,
+														  ft_ternary(color > 15 && color <= 25, 0x660094FF,
+																	 ft_ternary(color > 25, 0x310047FF,
+																				ft_ternary(color < 0 && color >= -3, 0xFFA505FF,
+																						   ft_ternary(color < -3 && color >= -5, 0xFFB805FF,
+																									  ft_ternary(color < -5 && color >= -15, 0xFFC905FF,
+																												 ft_ternary(color < -15 && color >= -25, 0xFFE505FF, 0xFFFB05FF))))))))), 0xFFFFFFFF);
+	else if (data->camera->color_mode == POLARITY_COLOR_SCHEME)
+		color = ft_ternary(color, ft_ternary(color > 0, 0xB82230FF, 0x1C24D0FF), 0xFFFFFFFF);
 	// CENTERING
 	p1.x -= (float) (data->map->width - 1) / 2;
 	p1.y -= (float) (data->map->height - 1) / 2;
@@ -131,12 +129,6 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	p2.x *= data->camera->position->z;
 	p2.y *= data->camera->position->z;
 	p2.z *= data->camera->position->z;
-	// PROJECTING
-	if (p_f)
-	{
-		p1 = p_f(p1);
-		p2 = p_f(p2);
-	}
 	// MIRRORING
 	if (data->camera->mirroring->x)
 	{
@@ -149,12 +141,19 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 		p2 = rotate_y(p2, M_PI);
 	}
 	// ROTATING
+	// TODO: change to pointer to don't use assignment
 	p1 = rotate_x(p1, data->camera->rotation->x);
 	p2 = rotate_x(p2, data->camera->rotation->x);
 	p1 = rotate_y(p1, data->camera->rotation->y);
 	p2 = rotate_y(p2, data->camera->rotation->y);
 	p1 = rotate_z(p1, data->camera->rotation->z);
 	p2 = rotate_z(p2, data->camera->rotation->z);
+	// PROJECTING
+	if (p_f)
+	{
+		p1 = p_f(p1);
+		p2 = p_f(p2);
+	}
 	// TRANSLATING
 	p1.x += data->camera->position->x;
 	p2.x += data->camera->position->x;

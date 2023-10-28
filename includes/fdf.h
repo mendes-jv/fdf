@@ -102,6 +102,8 @@ typedef struct s_point
 	int		color;
 }	t_point;
 
+//TODO: set colors to macros
+
 typedef struct s_camera
 {
 	t_point	*position;
@@ -149,6 +151,6 @@ void	ft_for_each(void **array, void (*f)(void *));
 void	ft_array_for_each(void **array, void (*f1)(void *), void (*f2)(void *));
 char	***ft_split_array(char **array, char delimiter);
 int		ft_atorgb(const char *str);
-int		ft_ternary(int condition, int a, int b);
+long	ft_ternary(long condition, long a, long b);
 
 #endif //FDF_H

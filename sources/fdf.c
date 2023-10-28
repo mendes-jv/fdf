@@ -87,7 +87,7 @@ int	ft_atorgb(const char *str)
 	return (result);
 } //TODO: Change this (*str) to don't use so many times
 
-int ft_ternary(int condition, int a, int b)
+long ft_ternary(long condition,long a, long b)
 {
 	if (condition)
 		return (a);
