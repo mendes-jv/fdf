@@ -19,7 +19,7 @@ int	main(int argc, char **argv) {
 	if (!argv || argc != 2)
 		handle_error(ARGUMENTS_ERROR_MESSAGE);
 	initialize_data(argv[1], &data);
-	handle_mlx(data);
+	handle_mlx(data, argv[1]);
 	free_data(data);
 	return (EXIT_SUCCESS);
 }

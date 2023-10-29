@@ -82,12 +82,15 @@ static void put_menu_text(mlx_t *mlx)
 	mlx_put_string(mlx, "Zoom in -> Scroll up or '+' key", 60, 380);
 	mlx_put_string(mlx, "Mirror by X axis -> 'R' and 'T' key", 40, 420);
 	mlx_put_string(mlx, "Mirror by Y axis -> 'F' and 'G' key", 40, 440);
-	mlx_put_string(mlx, "Centralize -> SPACE key", 100, 480);
-	mlx_put_string(mlx, "42 Isometric projection -> '1' key", 45, 520);
-	mlx_put_string(mlx, "True isometric projection -> '2' key", 35, 540);
-	mlx_put_string(mlx, "Orthographic projection -> '3' key", 45, 560);
-	mlx_put_string(mlx, "Map color scheme-> 'Z' key", 90, 580);
-	mlx_put_string(mlx, "Hendrix color scheme-> 'X' key", 65, 600);
-	mlx_put_string(mlx, "Polarity color scheme-> 'C' key", 60, 620);
-	mlx_put_string(mlx, "Exit -> ESC key", 150, 660);
+	mlx_put_string(mlx, "Upscale altitude -> 'Q' key", 80, 480);
+	mlx_put_string(mlx, "Downscale altitude -> 'E' key", 70, 500);
+	mlx_put_string(mlx, "Centralize -> SPACE key", 100, 540);
+	mlx_put_string(mlx, "42 Isometric projection -> '1' key", 45, 580);
+	mlx_put_string(mlx, "True isometric projection -> '2' key", 35, 600);
+	mlx_put_string(mlx, "Orthographic projection -> '3' key", 45, 620);
+	mlx_put_string(mlx, "Flat view -> '4' key", 115, 660);
+	mlx_put_string(mlx, "Map color scheme-> 'Z' key", 90, 700);
+	mlx_put_string(mlx, "Hendrix color scheme-> 'X' key", 65, 720);
+	mlx_put_string(mlx, "Polarity color scheme-> 'C' key", 60, 740);
+	mlx_put_string(mlx, "Exit -> ESC key", 150, 748);
 }

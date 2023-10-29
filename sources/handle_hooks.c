@@ -81,16 +81,16 @@ static void manage_centralization(t_data *data)
 {
 	double	zoom;
 
-	zoom = 10;
+	zoom = (double) ft_ternary((WIDTH > HEIGHT), WIDTH / data->map->width, HEIGHT / data->map->height) / 3;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_SPACE) || mlx_is_key_down(data->mlx, MLX_KEY_1)
-		|| mlx_is_key_down(data->mlx, MLX_KEY_2) || mlx_is_key_down(data->mlx, MLX_KEY_3) ||
-			mlx_is_key_down(data->mlx, MLX_KEY_4))
+		|| mlx_is_key_down(data->mlx, MLX_KEY_2) || mlx_is_key_down(data->mlx, MLX_KEY_3))
 	{
 		if (mlx_is_key_down(data->mlx, MLX_KEY_SPACE))
 			zoom = data->camera->position->z;
 		*(data->camera->position) = (t_point) {((float) WIDTH + (float) MENU_WIDTH)/ 2, (float) HEIGHT / 2, zoom, 0};
 		*(data->camera->rotation) = (t_point) {0, 0, 0, 0};
 		*(data->camera->mirroring) = (t_point) {0, 0, 0, 0};
+		data->camera->upscaling = 10;
 	}
 }
 
@@ -113,6 +113,16 @@ static void manage_color_mode(t_data *data)
 		data->camera->color_mode = POLARITY_COLOR_SCHEME;
 }
 
+static void	manage_upscaling(t_data *data)
+{
+	if (mlx_is_key_down(data->mlx, MLX_KEY_Q) && data->camera->upscaling < 100)
+		data->camera->upscaling++;
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_E) && data->camera->upscaling > -100)
+		data->camera->upscaling--;
+	else if (mlx_is_key_down(data->mlx,MLX_KEY_4))
+		data->camera->upscaling = 0;
+}
+
 static void	set_render_attributes(t_data *data)
 {
 	manage_color_mode(data);
@@ -121,6 +131,7 @@ static void	set_render_attributes(t_data *data)
 	manage_translation(data);
 	manage_rotation(data);
 	manage_mirroring(data);
+	manage_upscaling(data);
 	manage_centralization(data);
 }
 

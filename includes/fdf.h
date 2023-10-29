@@ -23,6 +23,10 @@
 # include <stdlib.h>
 
 // MACROS DEFINITIONS
+# ifndef ICON_PATH
+#  define ICON_PATH "./assets/42.png"
+# endif //ICON_PATH
+
 # ifndef WIDTH
 #  define WIDTH 1920
 # endif //WIDTH
@@ -36,7 +40,7 @@
 # endif //MENU_WIDTH
 
 # ifndef PROGRAM_NAME
-#  define PROGRAM_NAME "Fil De Fer"
+#  define PROGRAM_NAME "Fil De Fer - "
 # endif //PROGRAM_NAME
 
 # ifndef ARGUMENTS_ERROR_MESSAGE
@@ -109,6 +113,7 @@ typedef struct s_camera
 	t_point	*position;
 	t_point	*rotation;
 	t_point *mirroring;
+	char	upscaling;
 	char	color_mode;
 }	t_camera;
 
@@ -123,11 +128,12 @@ typedef t_point (*t_proj_f)(t_point);
 
 typedef struct s_data
 {
-	t_camera	*camera;
-	t_map		*map;
-	t_proj_f	projection;
-	mlx_image_t	*image;
-	mlx_t		*mlx;
+	t_camera		*camera;
+	t_map			*map;
+	t_proj_f		projection;
+	mlx_texture_t	*icon;
+	mlx_image_t		*image;
+	mlx_t			*mlx;
 }	t_data;
 
 typedef void (*t_draw_f)(t_data *, t_proj_f, t_point, t_point);
@@ -137,7 +143,7 @@ t_point	apply_isometric(t_point p);
 t_point	apply_true_isometric(t_point p);
 void	apply_bresenham(t_data *data, t_proj_f f, t_point p1, t_point p2);
 void	handle_error(const char *message);
-void	handle_mlx(t_data *data);
+void	handle_mlx(t_data *data, char *map_path);
 void	handle_key_hooks(t_data *data);
 void	handle_scroll_hook(double scroll_x, double scroll_y, t_data *data);
 t_map	*parse_map(char *map_str);

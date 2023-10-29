@@ -41,7 +41,7 @@ static void read_map(t_list **list, int map_fd)
 {
 	t_list 	*node;
 	char	*temp_line;
-
+	size_t	length;
 
 	temp_line = ft_get_next_line(map_fd);
 	if (!temp_line)
@@ -49,12 +49,15 @@ static void read_map(t_list **list, int map_fd)
 	ft_printf ("\nGNL result:\n");
 	while (temp_line) {
 		ft_printf ("%s", temp_line);
-		ft_lstadd_back(list,ft_lstnew(ft_substr(temp_line, 0, ft_strlen(temp_line) - 1)));
+		length = ft_strlen(temp_line);
+		if (ft_strchr(temp_line, '\n'))
+			length--;
+		ft_lstadd_back(list,ft_lstnew(ft_substr(temp_line, 0, length)));
 		free(temp_line);
 		temp_line = ft_get_next_line(map_fd);
 	}
 	node = *list;
-	ft_printf("\nList content:\n");
+	ft_printf("\n\nList content:\n");
 	while (node)
 	{
 		ft_printf("%s\n", (char *)node->content);
