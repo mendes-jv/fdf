@@ -6,13 +6,14 @@
 /*   By: jovicto2 <jovicto2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 08:52:31 by jovicto2          #+#    #+#             */
-/*   Updated: 2023/10/20 08:52:28 by jovicto2         ###   ########.org.br   */
+/*   Updated: 2023/10/29 01:13:39 by jovicto2         ###   ########.org.br   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-int	main(int argc, char **argv) {
+int	main(int argc, char **argv)
+{
 	t_data	*data;
 
 	data = NULL;
@@ -24,72 +25,43 @@ int	main(int argc, char **argv) {
 	return (EXIT_SUCCESS);
 }
 
-size_t	ft_arr_len(char **array)
+void	handle_error(const char *message)
 {
-	size_t	count;
+	if (errno)
+		perror(message);
+	else
+		write(STDERR_FILENO, message, ft_strlen(message));
+	exit(EXIT_FAILURE);
+}
 
-	count = 0;
-	while (*(array++))
-		count++;
-	return (count);
-} //TODO: remove this function
-
-void	ft_for_each(void **array, void (*f)(void *))
+void	handle_key_hooks(t_data *data)
 {
-	while (*array)
-		f(*(array++));
-} //TODO: remove this function
-
-void	ft_array_for_each(void **array, void (*array_f)(void *), void (*index_f)(void *))
-{
-	while (*array)
+	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 	{
-		ft_for_each(*array, index_f);
-		array_f(*(array++));
+		mlx_close_window(data->mlx);
+		exit(EXIT_SUCCESS);
 	}
-} //TODO: remove this function
+	set_render_attributes(data);
+	manage_render(data);
+}
 
-char	***ft_split_array(char **array, char delimiter)
+void	handle_scroll_hook(double scroll_x, double scroll_y, t_data *data)
 {
-	char	***split_array;
-	size_t	length;
+	manage_zoom(scroll_x > 0 || scroll_y > 0, scroll_x < 0 || scroll_y < 0,
+		&data->camera->position->z);
+	manage_render(data);
+}
 
-	length = ft_arr_len(array);
-	split_array = ft_calloc(length + 1, sizeof(char **));
-	split_array[length] = NULL;
-	while (length--)
-		split_array[length] = ft_split(array[length], delimiter);
-	return (split_array);
-} //TODO: remove this function
-
-int	ft_atorgb(const char *str)
+void	manage_render(t_data *data)
 {
-	int result;
-
-	result = 0;
-	if(!str)
-		return (0xFFFFFF);
-	if (*str == '0' && *(str + 1) == 'x')
-		str += 2;
-	while (*str)
-	{
-		result = result * 16;
-		if (*str >= '0' && *str <= '9')
-			result += *str - '0';
-		else if (*str >= 'a' && *str <= 'f')
-			result += *str - 'a' + 10;
-		else if (*str >= 'A' && *str <= 'F')
-			result += *str - 'A' + 10;
-		else
-			return (0x0);
-		str++;
-	}
-	return (result);
-} //TODO: Change this (*str) to don't use so many times
-
-long ft_ternary(long condition,long a, long b)
-{
-	if (condition)
-		return (a);
-	return (b);
-} //TODO: remove this function
+	mlx_delete_image(data->mlx, data->image);
+	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	if (mlx_is_key_down(data->mlx, MLX_KEY_1))
+		data->projection = apply_isometric;
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_2))
+		data->projection = apply_true_isometric;
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_3))
+		data->projection = NULL;
+	render_map(data, apply_bresenham, data->projection);
+	render_menu_background(data->image);
+}

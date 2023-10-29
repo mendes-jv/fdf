@@ -106,8 +106,6 @@ typedef struct s_point
 	int		color;
 }	t_point;
 
-//TODO: set colors to macros
-
 typedef struct s_camera
 {
 	t_point	*position;
@@ -144,6 +142,18 @@ t_point	apply_true_isometric(t_point p);
 void	apply_bresenham(t_data *data, t_proj_f f, t_point p1, t_point p2);
 void	handle_error(const char *message);
 void	handle_mlx(t_data *data, char *map_path);
+void	manage_render(t_data *data);
+void	set_render_attributes(t_data *data);
+void	manage_zoom(int zoom_in, int zoom_out, double *zoom);
+void	manage_color_mode(t_data *data);
+void	manage_upscaling(t_data *data);
+void	manage_centralization(t_data *data);
+void	manage_translation(t_data *data);
+void	manage_rotation(t_data *data);
+void	manage_mirroring(t_data *data);
+t_point rotate_x(t_point p, double angle);
+t_point rotate_y(t_point p, double angle);
+t_point rotate_z(t_point p, double angle);
 void	handle_key_hooks(t_data *data);
 void	handle_scroll_hook(double scroll_x, double scroll_y, t_data *data);
 t_map	*parse_map(char *map_str);
@@ -152,10 +162,6 @@ void	render_menu(t_data *data);
 void	render_menu_background(mlx_image_t *mlx);
 void	initialize_data(char *map_path, t_data **data);
 void	free_data(t_data *data);
-size_t	ft_arr_len(char **array);
-void	ft_for_each(void **array, void (*f)(void *));
-void	ft_array_for_each(void **array, void (*f1)(void *), void (*f2)(void *));
-char	***ft_split_array(char **array, char delimiter);
 int		ft_atorgb(const char *str);
 long	ft_ternary(long condition, long a, long b);
 
