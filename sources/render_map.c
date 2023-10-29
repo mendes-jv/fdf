@@ -121,9 +121,9 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 		color = ft_ternary(color, ft_ternary(color > 0, 0xB82230FF, 0x1C24D0FF), 0xFFFFFFFF);
 	// UPSCALING
 	if (p1.z)
-		p1.z += data->camera->upscaling;
+		p1.z *= (float) data->camera->upscaling / 10;
 	if (p2.z)
-		p2.z += data->camera->upscaling;
+		p2.z *= (float) data->camera->upscaling / 10;
 	// CENTERING
 	p1.x -= (float) (data->map->width - 1) / 2;
 	p1.y -= (float) (data->map->height - 1) / 2;
@@ -136,6 +136,14 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 	p2.x *= data->camera->position->z;
 	p2.y *= data->camera->position->z;
 	p2.z *= data->camera->position->z / 5;
+	// ROTATING
+	// TODO: change to pointer to don't use assignment
+	p1 = rotate_x(p1, data->camera->rotation->x);
+	p2 = rotate_x(p2, data->camera->rotation->x);
+	p1 = rotate_y(p1, data->camera->rotation->y);
+	p2 = rotate_y(p2, data->camera->rotation->y);
+	p1 = rotate_z(p1, data->camera->rotation->z);
+	p2 = rotate_z(p2, data->camera->rotation->z);
 	// PROJECTING
 	if (p_f)
 	{
@@ -153,14 +161,6 @@ void	apply_bresenham(t_data *data, t_proj_f p_f, t_point p1, t_point p2)
 		p1 = rotate_y(p1, M_PI);
 		p2 = rotate_y(p2, M_PI);
 	}
-	// ROTATING
-	// TODO: change to pointer to don't use assignment
-	p1 = rotate_x(p1, data->camera->rotation->x);
-	p2 = rotate_x(p2, data->camera->rotation->x);
-	p1 = rotate_y(p1, data->camera->rotation->y);
-	p2 = rotate_y(p2, data->camera->rotation->y);
-	p1 = rotate_z(p1, data->camera->rotation->z);
-	p2 = rotate_z(p2, data->camera->rotation->z);
 	// TRANSLATING
 	p1.x += data->camera->position->x;
 	p2.x += data->camera->position->x;

@@ -90,6 +90,7 @@ static void manage_centralization(t_data *data)
 		*(data->camera->position) = (t_point) {((float) WIDTH + (float) MENU_WIDTH)/ 2, (float) HEIGHT / 2, zoom, 0};
 		*(data->camera->rotation) = (t_point) {0, 0, 0, 0};
 		*(data->camera->mirroring) = (t_point) {0, 0, 0, 0};
+		data->camera->upscaling = 10;
 	}
 }
 
@@ -118,6 +119,8 @@ static void	manage_upscaling(t_data *data)
 		data->camera->upscaling++;
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_E) && data->camera->upscaling > -100)
 		data->camera->upscaling--;
+	else if (mlx_is_key_down(data->mlx,MLX_KEY_4))
+		data->camera->upscaling = 0;
 }
 
 static void	set_render_attributes(t_data *data)

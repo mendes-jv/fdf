@@ -33,7 +33,7 @@ void initialize_data(char *map_path, t_data **data)
 	(*data)->camera->mirroring->x = 0;
 	(*data)->camera->mirroring->y = 0;
 	(*data)->camera->color_mode = DEFAULT_COLOR_MODE;
-	(*data)->camera->upscaling = 0;
+	(*data)->camera->upscaling = 10;
 	ft_printf("\nParsed map content:\n");
 	while (node)
 	{
