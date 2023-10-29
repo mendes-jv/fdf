@@ -15,9 +15,11 @@
 void handle_mlx(t_data *data)
 {
 	mlx_set_setting(MLX_MAXIMIZED, true);
-//	mlx_set_setting(MLX_STRETCH_IMAGE, true);
+	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	data->mlx = mlx_init(WIDTH, HEIGHT, PROGRAM_NAME, true);
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	data->icon = mlx_load_png(ICON_PATH);
+	mlx_set_icon(data->mlx, data->icon);
 	if (!data->mlx
 		|| !data->image
 		|| mlx_image_to_window(data->mlx,data->image, 0, 0) == -1)
@@ -30,5 +32,6 @@ void handle_mlx(t_data *data)
 	mlx_scroll_hook(data->mlx, (mlx_scrollfunc) handle_scroll_hook, data);
 	mlx_loop_hook(data->mlx, (void *) handle_key_hooks, data);
 	mlx_loop(data->mlx);
+	mlx_delete_texture(data->icon);
 	mlx_terminate(data->mlx);
 }

@@ -23,6 +23,10 @@
 # include <stdlib.h>
 
 // MACROS DEFINITIONS
+# ifndef ICON_PATH
+#  define ICON_PATH "./assets/42.png"
+# endif //ICON_PATH
+
 # ifndef WIDTH
 #  define WIDTH 1920
 # endif //WIDTH
@@ -124,11 +128,12 @@ typedef t_point (*t_proj_f)(t_point);
 
 typedef struct s_data
 {
-	t_camera	*camera;
-	t_map		*map;
-	t_proj_f	projection;
-	mlx_image_t	*image;
-	mlx_t		*mlx;
+	t_camera		*camera;
+	t_map			*map;
+	t_proj_f		projection;
+	mlx_texture_t	*icon;
+	mlx_image_t		*image;
+	mlx_t			*mlx;
 }	t_data;
 
 typedef void (*t_draw_f)(t_data *, t_proj_f, t_point, t_point);
