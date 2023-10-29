@@ -37,7 +37,9 @@ MLX_FLAGS		:= -ldl -lglfw -pthread -lm
 # Sources
 
 SOURCE_FILES	:= fdf \
-					handle_data handle_error handle_hooks handle_mlx \
+					apply_bresenham \
+					handle_data  handle_mlx handle_points \
+					handle_camera_hooks handle_view_hooks \
 					parse_map \
 					render_map render_menu
 

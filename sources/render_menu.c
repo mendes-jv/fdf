@@ -6,7 +6,7 @@
 /*   By: jovicto2 <jovicto2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 01:08:45 by jovicto2          #+#    #+#             */
-/*   Updated: 2023/10/24 01:08:47 by jovicto2         ###   ########.org.br   */
+/*   Updated: 2023/10/29 01:48:00 by jovicto2         ###   ########.org.br   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,13 @@ static void	put_menu_text(mlx_t *mlx);
 
 void	render_menu(t_data *data)
 {
-	mlx_put_string(data->mlx, " _______________________________________", 10, 40);
-	mlx_put_string(data->mlx, "/                                       \\", 10, 53);
+	mlx_put_string(data->mlx, " _______________________________________",
+		10, 40);
+	mlx_put_string(data->mlx, "/                                       \\",
+		10, 53);
 	mlx_put_string(data->mlx, "            42 Sao Paulo - FdF ", 10, 61);
-	mlx_put_string(data->mlx, "\\_______________________________________/", 10, 68);
+	mlx_put_string(data->mlx, "\\_______________________________________/",
+		10, 68);
 	mlx_put_string(data->mlx, "        _______  ______   _______ ", 10, 90);
 	mlx_put_string(data->mlx, "       (  ____ \\(  __  \\ (  ____ \\", 10, 105);
 	mlx_put_string(data->mlx, "       | (    \\/| (  \\  )| (    \\/", 10, 120);
@@ -29,18 +32,24 @@ void	render_menu(t_data *data)
 	mlx_put_string(data->mlx, "       | (      | |   ) || (      ", 10, 165);
 	mlx_put_string(data->mlx, "       | )      | (__/  )| )      ", 10, 180);
 	mlx_put_string(data->mlx, "       |/       (______/ |/       ", 10, 195);
-	mlx_put_string(data->mlx, " _______________________________________", 10, 220);
-	mlx_put_string(data->mlx, "/                                       \\", 10, 233);
+	mlx_put_string(data->mlx, " _______________________________________", 10,
+		220);
+	mlx_put_string(data->mlx, "/                                       \\", 10,
+		233);
 	mlx_put_string(data->mlx, "                Controls", 10, 241);
-	mlx_put_string(data->mlx, "\\_______________________________________/", 10, 248);
+	mlx_put_string(data->mlx, "\\_______________________________________/", 10,
+		248);
 	put_menu_flag(data->mlx);
 	put_menu_text(data->mlx);
 }
 
 void	render_menu_background(mlx_image_t *image)
 {
-	int x = 0;
-	int y = 0;
+	int	x;
+	int	y;
+
+	x = 0;
+	y = 0;
 	while (y <= HEIGHT)
 	{
 		while (x <= MENU_WIDTH)
@@ -53,10 +62,13 @@ void	render_menu_background(mlx_image_t *image)
 	}
 }
 
-static void put_menu_flag(mlx_t *mlx)
+static void	put_menu_flag(mlx_t *mlx)
 {
-	int y = 265;
-	int x = 22;
+	int	y;
+	int	x;
+
+	y = 265;
+	x = 22;
 	while (y < 740)
 	{
 		mlx_put_string(mlx, "|", 20, y);
@@ -73,7 +85,7 @@ static void put_menu_flag(mlx_t *mlx)
 	mlx_put_string(mlx, "_______________________", 100, 930);
 }
 
-static void put_menu_text(mlx_t *mlx)
+static void	put_menu_text(mlx_t *mlx)
 {
 	mlx_put_string(mlx, "Rotate by X axis -> 'Y' and 'U' keys", 35, 280);
 	mlx_put_string(mlx, "Rotate by Y axis -> 'H' and 'J' keys", 35, 300);
@@ -92,5 +104,5 @@ static void put_menu_text(mlx_t *mlx)
 	mlx_put_string(mlx, "Map color scheme-> 'Z' key", 90, 700);
 	mlx_put_string(mlx, "Hendrix color scheme-> 'X' key", 65, 720);
 	mlx_put_string(mlx, "Polarity color scheme-> 'C' key", 60, 740);
-	mlx_put_string(mlx, "Exit -> ESC key", 150, 748);
+	mlx_put_string(mlx, "Exit -> ESC key", 150, 780);
 }
